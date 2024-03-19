@@ -11,7 +11,13 @@ void Quicksort<T>::sort(){
 
     //std::cout << high << std::endl;
     //std::cout << "End:" << data.at(high) << std::endl;
-    sort(low, high);
+    try{
+        sort(low, high);
+    }
+    catch(const std::exception& ex){
+        ex.what();
+    }
+    //sort(low, high);
     //size_t pivot = get_pivot(low, high);
 
     //sort(low, pivot-1);
@@ -20,10 +26,13 @@ void Quicksort<T>::sort(){
 
 template<class T>
 void Quicksort<T>::sort(size_t low, size_t high){
+    if(low>=high)
+        return;
+
     size_t pivot = get_pivot(low, high);
 
     sort(low, pivot-1);
-    sort(pivot + 1, high);
+    sort(pivot, high);
 }
 
 template<class T>
@@ -42,18 +51,39 @@ void Quicksort<T>::set_data(std::vector<T> data){
 
 template<class T>
 size_t Quicksort<T>::get_pivot(size_t low, size_t high){
-    auto pivot_value = data.at(high);
-    size_t index= low - 1;
+    size_t pivot = low + (high - low) / 2;
+    auto pivot_value = data.at(pivot);
 
-    for(size_t i = low; i < high; i++){
-        if(data.at(i) < pivot_value){
-            index++;
-            swap(index, i);
+    size_t start = low;
+    size_t end = high;
+    while(start <= end){
+        while(data.at(start) < pivot_value)
+            start++;
+
+        while(data.at(end) > pivot_value)
+            end--;
+
+        if(start <= end){
+            swap(start, end);
+            start++;
+            end--;
         }
     }
-    
-    swap(index+1, high);
-    return index+1;
+    return start;
+    /*int pivot = high;
+    int start = low;
+    auto pivot_value = data.at(pivot);
+
+
+    for(int i = start; i < high; i++){
+        if(data.at(i) < pivot_value){
+            swap(i, start);
+            start++;
+        }
+    }
+    swap(start, pivot);
+    return start;
+    */
 }
 
 template<class T>
