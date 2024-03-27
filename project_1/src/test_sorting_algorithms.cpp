@@ -1,11 +1,11 @@
 #define CATCH_CONFIG_MAIN
 #include "catch2/catch.hpp"
 
-#include "algorithms/bubblesort.h"
+//#include "algorithms/bubblesort.h"
 #include "algorithms/insertsort.h"
 #include "algorithms/heapsort.h"
 #include "algorithms/mergesort.h"
-#include "algorithms/shellsort.h"
+//#include "algorithms/shellsort.h"
 #include "algorithms/quicksort.h"
 #include "algorithms/introsort.h"
 
@@ -30,6 +30,17 @@ TEST_CASE("Quicksort")
 
     //BubbleSort<int> bubbleSort;
     QuickSort<int> sorter;
+    sorter.sort(data.begin(),data.end());
+
+    REQUIRE(data == resultData);
+}
+
+TEST_CASE("Mergesort")
+{
+    auto data = getTestData();
+    auto resultData = getSortedData();
+
+    MergeSort<int> sorter;
     sorter.sort(data.begin(),data.end());
 
     REQUIRE(data == resultData);
