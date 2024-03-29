@@ -10,6 +10,10 @@ class InsertSort
 public:
     void sort(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end)
     {
+        if(start == end)
+            return;
+
+        
     };
 };
 

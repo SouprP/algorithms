@@ -46,3 +46,27 @@ TEST_CASE("Mergesort")
     REQUIRE(data == resultData);
 }
 
+/*
+TEST_CASE("Heapsort")
+{
+    auto data = getTestData();
+    auto resultData = getSortedData();
+
+    HeapSort<int> sorter;
+    sorter.sort(data.begin(),data.end());
+
+    REQUIRE(data == resultData);
+}
+*/
+
+TEST_CASE("Insertsort")
+{
+    auto data = getTestData();
+    auto resultData = getSortedData();
+
+    InsertSort<int> sorter;
+    sorter.sort(data.begin(),data.end());
+
+    REQUIRE(data == resultData);
+}
+

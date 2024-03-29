@@ -45,7 +45,6 @@ class Generator{
         //std::vector<char> generate_char(size_t size);
 
         Generator(std::chrono::high_resolution_clock::time_point program_seed){
-            srand(time(NULL));
             this->program_seed = program_seed;
         };
 

@@ -15,9 +15,10 @@ int main(int argc, char* argv[])
     //sorter.sort(data.begin(), data.end());
 
     FileIO<int> file;
-    file.write("data_test", data);
-    file.read("data_test");
-    //for(auto obj : data)
-    //    std::cout << obj << std::endl;
+    file.write("data_test.txt", data);
+    auto read = file.read("data_test.txt");
+    
+    for(auto obj : read)
+        std::cout << obj << std::endl;
     return 0;
 }

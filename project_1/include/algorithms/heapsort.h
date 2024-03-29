@@ -11,26 +11,15 @@ class HeapSort
         void sort(typename std::vector<T>::iterator start, 
             typename std::vector<T>::iterator end)
         {
-            auto largest = end;
-            auto low = start + (std::distance(start, end) * 2 + 1);
-            auto high = start + (std::distance(start, end) * 2 + 2);
-
-            if(low < end && *low > *largest)
-                largest = low;
             
-            if(high < end && *high > *largest)
-                largest = high;
-
-            if(largest != end){
-                std::swap(*end, *largest);
-                heap();
-            }
         };
 
     private:
-        void heap()
+        void make_heap(typename std::vector<T>::iterator start,
+            typename std::vector<T>::iterator end,
+            typename std::vector<T>::iterator root)
         {
-            
+
         };
 };
 
