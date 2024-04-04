@@ -100,3 +100,17 @@ TEST_CASE("Custom Heapsort")
 
     REQUIRE(data == resultData);
 }
+
+
+TEST_CASE("Introsort")
+{
+    auto data = getCustomData();
+    auto resultData = data;
+    std::sort(resultData.begin(), resultData.end());
+
+        
+    IntroSort<int> sorter;
+    sorter.sort(data.begin(),data.end());
+
+    REQUIRE(data == resultData);
+}
