@@ -8,12 +8,19 @@
 //#include "algorithms/shellsort.h"
 #include "algorithms/quicksort.h"
 #include "algorithms/introsort.h"
+#include <utils/generator.h>
 
 using namespace std::string_literals;
 
 std::vector<int> getTestData()
 {
     return {11,102,1,13,25,18,20,7,8,6,103,3,1}; /// Można modyfikować
+}
+
+std::vector<int> getCustomData(){
+    Generator gen;
+
+    return gen.generate_int(1000);
 }
 
 std::vector<int> getSortedData()
@@ -70,3 +77,26 @@ TEST_CASE("Insertsort")
     REQUIRE(data == resultData);
 }
 
+
+TEST_CASE("Heapsort")
+{
+    auto data = getTestData();
+    auto resultData = getSortedData();
+
+    HeapSort<int> sorter;
+    sorter.sort(data.begin(),data.end());
+
+    REQUIRE(data == resultData);
+}
+
+TEST_CASE("Custom Heapsort")
+{
+    auto data = getCustomData();
+    auto resultData = data;
+    std::sort(resultData.begin(), resultData.end());
+
+    HeapSort<int> sorter;
+    sorter.sort(data.begin(),data.end());
+
+    REQUIRE(data == resultData);
+}

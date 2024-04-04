@@ -10,10 +10,16 @@ class InsertSort
 public:
     void sort(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end)
     {
-        if(start == end)
-            return;
+         for(auto i = start + 1; i < end; i++){
+            auto value = *i;
+            auto previous = i - 1;
 
-        
+            while(previous >= start && *previous > value){
+                *(previous + 1) = *previous;
+                previous--;
+            }
+            *(previous + 1) = value;
+        }
     };
 };
 

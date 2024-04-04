@@ -25,10 +25,10 @@ class FileIO{
         
         std::vector<T> read(std::string file_name){
             std::fstream file(file_name, std::ios::in);
-            std::vector<T> temp;
+            std::vector<T> buffer;
 
             if(!file.is_open())
-                return temp;
+                return buffer;
 
 
             T value;
@@ -37,11 +37,11 @@ class FileIO{
             while(getline(file, output)){
                 std::istringstream stream(output);
                 stream >> value;
-                temp.push_back(value);
+                buffer.push_back(value);
             }
 
             file.close();
-            return temp;
+            return buffer;
         };
 };
 
