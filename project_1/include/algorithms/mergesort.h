@@ -31,35 +31,17 @@ class MergeSort{
                 while(low != low_max && high != high_max){
                     if(*high < *low){
                         temp[temp_index++] = *high;
-                        ++high;
+                        high++;
                     }
                     else{
                         temp[temp_index++] = *low;
-                        ++low;
+                        low++;;
                     }
                 }
 
                 std::copy(low, low_max, &temp[temp_index]);
                 std::copy(high, high_max, &temp[temp_index]);
                 std::copy(temp.begin(), temp.end(), start);
-                /*
-                std::vector<T> temp(std::distance(start, end));
-                auto low = start;
-                //auto mid = pivot;
-                auto high = end;
-                auto temp_iterator = temp.begin();
-            
-                while(low < pivot && high < end){
-                    if(*low < *high)
-                        *temp_iterator++ = std::move(*low++);
-                    else
-                        *temp_iterator++ = std::move(*high++);
-                }
-
-                temp_iterator = std::move(low, pivot, temp_iterator);
-                temp_iterator = std::move(high, end, temp_iterator);
-                std::move(temp.begin(), temp.end(), start);
-                */
         };
 
 };

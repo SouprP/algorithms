@@ -7,7 +7,8 @@
 #include <chrono>
 
 // alphabet for ASCII
-#define RAND_GEN_MAX std::pow(2, 8)
+//#define RAND_GEN_MAX std::pow(2, 8)
+#define RAND_GEN_MAX INT32_MAX
 #define ALPHABET_MIN -25
 #define ALPHABET_MAX 90
 #define CAPITAL_ADD 32

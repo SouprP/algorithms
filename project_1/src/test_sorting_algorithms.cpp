@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch2/catch.hpp"
+#include <utils/tools.h>
 
 //#include "algorithms/bubblesort.h"
 #include "algorithms/insertsort.h"
@@ -35,7 +36,6 @@ TEST_CASE("Quicksort")
     auto data = getTestData();
     auto resultData = getSortedData();
 
-    //BubbleSort<int> bubbleSort;
     QuickSort<int> sorter;
     sorter.sort(data.begin(),data.end());
 
@@ -53,18 +53,6 @@ TEST_CASE("Mergesort")
     REQUIRE(data == resultData);
 }
 
-/*
-TEST_CASE("Heapsort")
-{
-    auto data = getTestData();
-    auto resultData = getSortedData();
-
-    HeapSort<int> sorter;
-    sorter.sort(data.begin(),data.end());
-
-    REQUIRE(data == resultData);
-}
-*/
 
 TEST_CASE("Insertsort")
 {
@@ -89,18 +77,6 @@ TEST_CASE("Heapsort")
     REQUIRE(data == resultData);
 }
 
-TEST_CASE("Custom Heapsort")
-{
-    auto data = getCustomData();
-    auto resultData = data;
-    std::sort(resultData.begin(), resultData.end());
-
-    HeapSort<int> sorter;
-    sorter.sort(data.begin(),data.end());
-
-    REQUIRE(data == resultData);
-}
-
 
 TEST_CASE("Introsort")
 {
@@ -108,6 +84,36 @@ TEST_CASE("Introsort")
     auto resultData = data;
     std::sort(resultData.begin(), resultData.end());
 
+    IntroSort<int> sorter;
+    sorter.sort(data.begin(),data.end());
+
+    REQUIRE(data == resultData);
+}
+
+TEST_CASE("Introsort Reverse"){
+    auto data = getCustomData();
+    auto resultData = data;
+
+    Tools<int> tools;
+    tools.sort_reverse(data.begin(),data.end());
+
+    std::sort(resultData.begin(), resultData.end());
+        
+    IntroSort<int> sorter;
+    sorter.sort(data.begin(),data.end());
+
+    REQUIRE(data == resultData);
+}
+
+
+TEST_CASE("Introsort Percentage"){
+    auto data = getCustomData();
+    auto resultData = data;
+
+    Tools<int> tools;
+    tools.sort_perc(data.begin(),data.end(), 50);
+
+    std::sort(resultData.begin(), resultData.end());
         
     IntroSort<int> sorter;
     sorter.sort(data.begin(),data.end());

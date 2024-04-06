@@ -8,7 +8,7 @@
 template<typename T>
 class Tools{
     public:
-        void sort_perc(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end, uint8_t perc){
+        void sort_perc(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end, float_t perc){
             if(perc < 0 || perc > 100)
                 return;
 
