@@ -15,13 +15,21 @@ public:
     void sort(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end)
     {
         size_t distance = std::distance(start, end);
+        
+        // when we use log2, heapsort is never used
+        size_t depth = 2 * log(distance); // log2 or log?
+        
+        sort_util(start, end, depth);
+    };
+
+    void sort_util(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end, size_t depth){
+        size_t distance = std::distance(start, end);
+
         if(distance < 16){
             InsertSort<int> sorter;
             sorter.sort(start, end);
             return;
         }
-
-        size_t depth = 2 * log2(distance);
         
         if(depth == 0){
             HeapSort<int> sorter;
@@ -29,8 +37,32 @@ public:
             return;
         }
 
-        QuickSort<int> sorter;
-        sorter.sort(start, end);
-    };
+        auto pivot = partition(start, end - 1);
+        sort_util(start, pivot, depth - 1);
+        sort_util(pivot, end, depth - 1);
+    }
+
+    auto partition(typename std::vector<T>::iterator start, 
+            typename std::vector<T>::iterator end){
+                auto pivot = start + std::distance(start, end) / 2;
+                auto pivot_value = *pivot;
+            
+                while(start <= end){
+                    while(*start < pivot_value)
+                        start++;
+
+                    while(*end > pivot_value)
+                        end--;
+
+                    if(start <= end){
+                        std::iter_swap(start, end);
+                        start++;
+                        end--;
+                    }
+
+            
+                }
+                return start;
+            };
 };
 #endif //SORTING_ALGORITHMS_INTROSORT_H

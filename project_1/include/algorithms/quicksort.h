@@ -9,8 +9,7 @@ class QuickSort{
     // std::swap
     // std::distance
     public:
-        void sort(typename std::vector<T>::iterator start, 
-            typename std::vector<T>::iterator end){
+        void sort(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end){
                 if(std::distance(start, end) <= 1)
                     return;
 
@@ -20,8 +19,7 @@ class QuickSort{
             };
 
     private:
-        auto partition(typename std::vector<T>::iterator start, 
-            typename std::vector<T>::iterator end){
+        auto partition(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end){
                 auto pivot = start + std::distance(start, end) / 2;
                 auto pivot_value = *pivot;
             

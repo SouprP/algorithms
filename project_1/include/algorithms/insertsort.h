@@ -8,8 +8,7 @@ template <typename T>
 class InsertSort
 {
 public:
-    void sort(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end)
-    {
+    void sort(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end){
          for(auto i = start + 1; i < end; i++){
             auto value = *i;
             auto previous = i - 1;

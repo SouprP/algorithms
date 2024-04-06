@@ -20,7 +20,7 @@ std::vector<int> getTestData()
 std::vector<int> getCustomData(){
     Generator gen;
 
-    return gen.generate_int(1000);
+    return gen.generate_int(10000);
 }
 
 std::vector<int> getSortedData()

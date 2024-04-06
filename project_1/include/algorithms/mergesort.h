@@ -7,9 +7,7 @@
 template <typename T>
 class MergeSort{
     public:
-        void sort(typename std::vector<T>::iterator start,
-            typename std::vector<T>::iterator end)
-            {
+        void sort(typename std::vector<T>::iterator start,typename std::vector<T>::iterator end){
                 if(std::distance(start, end) <= 1)
                     return;
 
@@ -22,8 +20,7 @@ class MergeSort{
     private:
         void merge(typename std::vector<T>::iterator start,
             typename std::vector<T>::iterator pivot,
-            typename std::vector<T>::iterator end)
-            {
+            typename std::vector<T>::iterator end){
                 std::vector<T> temp(std::distance(start, end));
                 auto low = start;
                 auto low_max = pivot;

@@ -9,9 +9,12 @@ class HeapSort
 {
     public:
         void sort(typename std::vector<T>::iterator start, 
-            typename std::vector<T>::iterator end)
-        {
-            make_heap(start, end);
+            typename std::vector<T>::iterator end){
+            auto size = end - start;
+            for (auto i = size / 2 - 1; i >= 0; --i) {
+                heapify(start, end, start + i);
+            }
+
             for (auto it = end - 1; it > start; --it) {
                 std::swap(*start, *it);
                 heapify(start, it, start);
@@ -19,18 +22,10 @@ class HeapSort
         };
 
     private:
-        void make_heap(typename std::vector<T>::iterator start,
-                   typename std::vector<T>::iterator end) {
-            auto size = end - start;
-            for (auto i = size / 2 - 1; i >= 0; --i) {
-                heapify(start, end, start + i);
-            }
-    }
 
         void heapify(typename std::vector<T>::iterator start,
             typename std::vector<T>::iterator end,
-            typename std::vector<T>::iterator root)
-        {
+            typename std::vector<T>::iterator root){
             auto size = end - start;
             auto left_child = 2 * (root - start) + 1;
             auto right_child = left_child + 1;
