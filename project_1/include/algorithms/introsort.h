@@ -14,6 +14,9 @@ class IntroSort
 public:
     void sort(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end)
     {
+        if(std::distance(start, end) <= 1)
+            return;
+
         size_t distance = std::distance(start, end);
         
         // when we use log2, heapsort is never used

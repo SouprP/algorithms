@@ -9,7 +9,10 @@ class HeapSort
 {
     public:
         void sort(typename std::vector<T>::iterator start, 
-            typename std::vector<T>::iterator end){
+                typename std::vector<T>::iterator end){
+            if(std::distance(start, end) <= 1)
+                return;
+
             auto size = end - start;
             for (auto i = size / 2 - 1; i >= 0; --i) {
                 heapify(start, end, start + i);
@@ -24,8 +27,18 @@ class HeapSort
     private:
 
         void heapify(typename std::vector<T>::iterator start,
-            typename std::vector<T>::iterator end,
-            typename std::vector<T>::iterator root){
+                typename std::vector<T>::iterator end,
+                typename std::vector<T>::iterator root){
+            // make a heap
+            // get rid of old root
+            // and get the new largest number (root)
+            //
+            //             (largest)
+            //               root
+            //             /      \
+            //   left_child        right_child
+            //
+            //
             auto size = end - start;
             auto left_child = 2 * (root - start) + 1;
             auto right_child = left_child + 1;

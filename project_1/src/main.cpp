@@ -22,32 +22,8 @@ typedef std::chrono::high_resolution_clock::time_point TimeVar;
 std::vector<size_t> DATA_SIZES = {10000, 50000, 100000, 500000, 1000000};
 
 
-std::vector<int> getTestData()
-{
-    //Generator gen;
-    //return gen.generate_int(10);
-    return {11,102,1,13,25,18,20,7,8,6,103,3,1}; /// Można modyfikować
-    //return {11,102,1,13,25,18,20,7,8,6};
-}
-
 int main(int argc, char* argv[])
 {
-    /*
-    auto d = getTestData();
-    Tools<int> tol;
-    QuickSort<int> sorter;
-    //tol.sort_perc(d.begin(), d.end(), 99.7);
-    //tol.sort_reverse(d.begin(), d.end());
-    //sorter.sort(d.begin(), d.end());
-
-    for(auto obj : d)
-        std::cout << obj << std::endl;
-    
-
-
-    return 0;
-    */
-
     for(auto SIZE : DATA_SIZES){
         std::cout << SIZE << std::endl << std::endl;
 
@@ -69,7 +45,7 @@ int main(int argc, char* argv[])
             std::vector<int> data = gen.generate_int(SIZE);
 
             // uncomment when needed to sort only a part of data or sort in reverse
-            //tools.sort_perc(data.begin(), data.end(), 90); // 25, 50, 75, 95, 99,7
+            tools.sort_perc(data.begin(), data.end(), 50); // 25, 50, 75, 95, 99,7
             //tools.sort_reverse(data.begin(), data.end());
 
             // we sort temp_data, so we still have the original data 

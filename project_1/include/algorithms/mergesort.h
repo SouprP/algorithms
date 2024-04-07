@@ -11,6 +11,7 @@ class MergeSort{
                 if(std::distance(start, end) <= 1)
                     return;
 
+                // get the pivot point and recursively call sort()
                 auto pivot = start + std::distance(start, end) / 2;
                 sort(start, pivot);
                 sort(pivot, end); 
@@ -21,6 +22,9 @@ class MergeSort{
         void merge(typename std::vector<T>::iterator start,
             typename std::vector<T>::iterator pivot,
             typename std::vector<T>::iterator end){
+                // deviding vector into two sub-vectors
+                // first vector: from index low to lox_max
+                // seconds vector: from index high to high_max
                 std::vector<T> temp(std::distance(start, end));
                 auto low = start;
                 auto low_max = pivot;
@@ -28,6 +32,7 @@ class MergeSort{
                 auto high_max = end;
                 size_t temp_index = 0;
 
+                // sorting
                 while(low != low_max && high != high_max){
                     if(*high < *low){
                         temp[temp_index++] = *high;
@@ -38,7 +43,8 @@ class MergeSort{
                         low++;;
                     }
                 }
-
+                
+                // merging
                 std::copy(low, low_max, &temp[temp_index]);
                 std::copy(high, high_max, &temp[temp_index]);
                 std::copy(temp.begin(), temp.end(), start);
