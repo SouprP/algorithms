@@ -5,50 +5,75 @@
 // sortowanie przez scalanie
 
 template <typename T>
-class MergeSort{
-    public:
-        void sort(typename std::vector<T>::iterator start,typename std::vector<T>::iterator end){
-                if(std::distance(start, end) <= 1)
-                    return;
+class MergeSort {
+public:
+    void sort(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end) {
+        
+        if (std::distance(start, end) <= 1) return;
 
-                // get the pivot point and recursively call sort()
-                auto pivot = start + std::distance(start, end) / 2;
-                sort(start, pivot);
-                sort(pivot, end); 
-                merge(start, pivot, end);
-            };
+        typename std::vector<T>::iterator pivot = start + std::distance(start, end) / 2;
 
-    private:
-        void merge(typename std::vector<T>::iterator start,
-            typename std::vector<T>::iterator pivot,
-            typename std::vector<T>::iterator end){
-                // deviding vector into two sub-vectors
-                // first vector: from index low to lox_max
-                // seconds vector: from index high to high_max
-                std::vector<T> temp(std::distance(start, end));
-                auto low = start;
-                auto low_max = pivot;
-                auto high = pivot;
-                auto high_max = end;
-                size_t temp_index = 0;
+        sort(start, pivot);
+        sort(pivot, end);
+        merge(start, pivot, end);
 
-                // sorting
-                while(low != low_max && high != high_max){
-                    if(*high < *low){
-                        temp[temp_index++] = *high;
-                        high++;
-                    }
-                    else{
-                        temp[temp_index++] = *low;
-                        low++;;
-                    }
-                }
-                
-                // merging
-                std::copy(low, low_max, &temp[temp_index]);
-                std::copy(high, high_max, &temp[temp_index]);
-                std::copy(temp.begin(), temp.end(), start);
-        };
+    };
+
+    void merge(typename std::vector<T>::iterator start, typename std::vector<T>::iterator pivot, typename std::vector<T>::iterator end) {
+
+        typename std::vector<T>::iterator i1 = start;
+        typename std::vector<T>::iterator i2 = pivot;
+        typename std::vector<T>::iterator j1 = pivot;
+        typename std::vector<T>::iterator j2 = end;
+
+        std::vector<T> temporary(std::distance(start, end));
+        int iterator = 0;
+        
+        while (i1 != i2 && j1 != j2) {
+
+            if (*i1 < *j1) {
+
+                temporary[iterator] = *i1;
+                iterator++;
+                i1++;
+
+            }
+            else {
+
+                temporary[iterator] = *j1;
+                iterator++;
+                j1++;
+
+            }
+
+            while (i1 != i2) {
+
+                temporary[iterator] = *i1;
+                iterator++;
+                i1++;
+
+            }
+
+            while (j1 != j2) {
+
+                temporary[iterator] = *j1;
+                iterator++;
+                j1++;
+
+            }
+
+            iterator = 0;
+
+            for (auto x = start; x != end; x++) {
+
+                *x = temporary[iterator];
+                iterator++;
+
+            }
+
+        }
+
+    }
 
 };
 #endif //SORTING_ALGORITHMS_MERGESORT_H

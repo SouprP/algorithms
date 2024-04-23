@@ -29,7 +29,8 @@ class HeapSort
         void heapify(typename std::vector<T>::iterator start,
                 typename std::vector<T>::iterator end,
                 typename std::vector<T>::iterator root){
-            // make a heap
+            
+                // make a heap
             // get rid of old root
             // and get the new largest number (root)
             //

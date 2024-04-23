@@ -1,27 +1,19 @@
 #define CATCH_CONFIG_MAIN
 #include "catch2/catch.hpp"
-#include <utils/tools.h>
 
-//#include "algorithms/bubblesort.h"
+#include "algorithms/bubblesort.h"
 #include "algorithms/insertsort.h"
 #include "algorithms/heapsort.h"
 #include "algorithms/mergesort.h"
-//#include "algorithms/shellsort.h"
+#include "algorithms/shellsort.h"
 #include "algorithms/quicksort.h"
 #include "algorithms/introsort.h"
-#include <utils/generator.h>
 
 using namespace std::string_literals;
 
 std::vector<int> getTestData()
 {
     return {11,102,1,13,25,18,20,7,8,6,103,3,1}; /// Można modyfikować
-}
-
-std::vector<int> getCustomData(){
-    Generator gen;
-
-    return gen.generate_int(10000);
 }
 
 std::vector<int> getSortedData()
@@ -31,92 +23,79 @@ std::vector<int> getSortedData()
     return data;
 }
 
-TEST_CASE("Quicksort")
+TEST_CASE("BubbleSort")
 {
     auto data = getTestData();
     auto resultData = getSortedData();
 
-    QuickSort<int> sorter;
-    sorter.sort(data.begin(),data.end());
+    BubbleSort<int> bubbleSort;
+    bubbleSort.sort(data.begin(),data.end());
 
     REQUIRE(data == resultData);
 }
 
-TEST_CASE("Mergesort")
+TEST_CASE("InsertSort")
 {
     auto data = getTestData();
     auto resultData = getSortedData();
 
-    MergeSort<int> sorter;
-    sorter.sort(data.begin(),data.end());
+    InsertSort<int> insertSort;
+    insertSort.sort(data.begin(),data.end());
 
     REQUIRE(data == resultData);
 }
 
-
-TEST_CASE("Insertsort")
+TEST_CASE("HeapSort")
 {
     auto data = getTestData();
     auto resultData = getSortedData();
 
-    InsertSort<int> sorter;
-    sorter.sort(data.begin(),data.end());
+    HeapSort<int> heapSort;
+    heapSort.sort(data.begin(),data.end());
 
     REQUIRE(data == resultData);
 }
 
-
-TEST_CASE("Heapsort")
+TEST_CASE("MergeSort")
 {
     auto data = getTestData();
     auto resultData = getSortedData();
 
-    HeapSort<int> sorter;
-    sorter.sort(data.begin(),data.end());
+    MergeSort<int> mergeSort;
+    mergeSort.sort(data.begin(),data.end());
 
     REQUIRE(data == resultData);
 }
 
-
-TEST_CASE("Introsort")
+TEST_CASE("ShellSort")
 {
-    auto data = getCustomData();
-    auto resultData = data;
-    std::sort(resultData.begin(), resultData.end());
+    auto data = getTestData();
+    auto resultData = getSortedData();
 
-    IntroSort<int> sorter;
-    sorter.sort(data.begin(),data.end());
-
-    REQUIRE(data == resultData);
-}
-
-TEST_CASE("Introsort Reverse"){
-    auto data = getCustomData();
-    auto resultData = data;
-
-    Tools<int> tools;
-    tools.sort_reverse(data.begin(),data.end());
-
-    std::sort(resultData.begin(), resultData.end());
-        
-    IntroSort<int> sorter;
-    sorter.sort(data.begin(),data.end());
+    ShellSort<int> shellSort;
+    shellSort.sort(data.begin(),data.end());
 
     REQUIRE(data == resultData);
 }
 
+TEST_CASE("QuickSort")
+{
+    auto data = getTestData();
+    auto resultData = getSortedData();
 
-TEST_CASE("Introsort Percentage"){
-    auto data = getCustomData();
-    auto resultData = data;
+    QuickSort<int> quickSort;
+    quickSort.sort(data.begin(),data.end());
 
-    Tools<int> tools;
-    tools.sort_perc(data.begin(),data.end(), 50);
+    REQUIRE(data == resultData);
+}
 
-    std::sort(resultData.begin(), resultData.end());
-        
-    IntroSort<int> sorter;
-    sorter.sort(data.begin(),data.end());
+TEST_CASE("IntroSort")
+{
+    auto data = getTestData();
+    auto resultData = getSortedData();
+
+    IntroSort<int> introSort;
+    introSort.sort(data.begin(),data.end());
 
     REQUIRE(data == resultData);
 }

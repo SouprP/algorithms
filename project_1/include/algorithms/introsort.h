@@ -20,7 +20,7 @@ public:
         size_t distance = std::distance(start, end);
         
         // when we use log2, heapsort is never used
-        size_t depth = 2 * log(distance); // log2 or log?
+        size_t depth = 2 * log2(distance); // log2 or log?
         
         sort_util(start, end, depth);
     };
@@ -37,6 +37,7 @@ public:
         if(depth == 0){
             HeapSort<int> sorter;
             sorter.sort(start, end);
+            //std::cout << "heap for " << depth <<  std::endl;
             return;
         }
 

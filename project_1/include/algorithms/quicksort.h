@@ -5,46 +5,38 @@
 // quicksort
 
 template <typename T>
-class QuickSort{
-    // std::swap
-    // std::distance
-    public:
-        void sort(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end){
-                if(std::distance(start, end) <= 1)
-                    return;
+class QuickSort {
+public:
 
-                // get the pivot point and recursively call sort()
-                auto pivot = partition(start, end - 1);
-                sort(start, pivot);
-                sort(pivot, end); 
-            };
+    void sort(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end) {
 
-    private:
-        auto partition(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end){
-                // get pivot point
-                auto pivot = start + std::distance(start, end) / 2;
-                auto pivot_value = *pivot;
-            
-                // sorting
-                while(start <= end){
-                    while(*start < pivot_value)
-                        start++;
+        if (std::distance(start, end) <= 1) return;
 
-                    while(*end > pivot_value)
-                        end--;
-                    
-                    // swap values
-                    if(start <= end){
-                        std::iter_swap(start, end);
-                        start++;
-                        end--;
-                    }
+        typename std::vector<T>::iterator pivot = partition(start, end);
+        sort(start, pivot);
+        sort(pivot + 1, end);
 
-            
-                }
-                return start;
-            };
+    };
 
-    
+    typename std::vector<T>::iterator partition(typename std::vector<T>::iterator start, typename std::vector<T>::iterator end) {
+
+        typename std::vector<T>::iterator pivot = end - 1;
+        typename std::vector<T>::iterator i = start;
+        typename std::vector<T>::iterator j = start;
+
+        while (j != pivot) {
+
+            while (*j >= *pivot) j++;
+            std::iter_swap(i, j);
+            j++;
+            i++;
+
+        }
+
+        std::iter_swap(i, pivot);
+        return i;
+
+    }
+
 };
 #endif //SORTING_ALGORITHMS_QUICKSORT_H
