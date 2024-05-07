@@ -7,7 +7,22 @@
 
 class AdjacencyListGraph : public Graph
 {
-
+  /**
+   *      ADJACENCY LIST
+   * 
+   *      A ------- C --------- D
+   *       \       /
+   *        \     /
+   *         \   / 
+   *           B
+   * 
+   *    The list of verticies it goes to
+   *    A - [ B, C ]
+   *    B - [ A, C ]
+   *    C - [ A, B, D ]
+   *    D - [ C ]
+   * 
+  */
   public:
     // TODO: implement all required methods
 

@@ -10,6 +10,9 @@
 #include <filesystem>
 #include <fstream>
 
+// defined in CMakeLists.txt
+#define DATA_DIR_PATH
+
 using namespace std::string_literals;
 
 const std::filesystem::path dataDirectoryPath{DATA_DIR_PATH};

@@ -13,6 +13,7 @@
  *   first - całkowita długość ścieżki
  *   second - wektor indeksów wierzchołków ze źródła do wirzechołka końcowego
  */
+
 using ShortestPathResult = std::map<int, std::pair<int, std::vector<int>>>;
 
 void dijkstra(Graph& graph, int sourceIndex, ShortestPathResult& result);
