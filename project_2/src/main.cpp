@@ -21,5 +21,7 @@ int main(int argc, char* argv[])
 
     std::cout << inputFile.c_str() << std::endl;
     auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
+    //graph.get()->insertVertex(Vertex());
+    graph.get()->visualise();
     return 0;
 }

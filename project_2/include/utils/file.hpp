@@ -42,6 +42,18 @@ class FileReader{
 
     }
 
+    size_t get_graph_size(){
+        return parse(data.front())[0];
+    }
+
+    size_t get_edges_count(){
+        return parse(data.front())[1];
+    }
+
+    size_t get_starting_vertex(){
+        return parse(data.back())[0];
+    }
+
 };
 
 template <typename T>

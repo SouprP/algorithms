@@ -6,6 +6,7 @@
 #include "graphs/graph.hpp"
 #include <structures/matrix.hpp>
 #include <utils/file.hpp>
+#include <utils/node.hpp>
 
 class AdjacencyMatrixGraph : public Graph
 {
@@ -31,27 +32,28 @@ class AdjacencyMatrixGraph : public Graph
    * 
   */
   private:
-    Matrix<int>* matrix;
+    Matrix<Edge*>* matrix;
+    size_t size;
 
   public:
     // TODO: implement
     static std::unique_ptr<Graph> createGraph(std::istream& is);
 
-    // use of virtual is optional here
-    // but I am to lazy to remove it
     void insertVertex(Vertex vertex) override;
-    void insertEdge(Vertex vertex_1, Vertex vertex_2) override;
+    void insertEdge(Vertex v1, Vertex v2, size_t weight) override;
 
-    void removeVertex(Vertex vertex) override;
+    void removeVertex(Vertex v) override;
     void removeEdge(Edge edge) override;
 
     // list of edges connected to this vertex
-    std::vector<Edge> incidentEdges(Vertex vertex) override;
+    std::vector<Edge> incidentEdges(Vertex v) override;
 
     // are vertex V1 and V2 connected by an edge
-    bool areAdjacent(Vertex vertex_1, Vertex vertex_2) override;
+    bool areAdjacent(Vertex v1, Vertex v2) override;
 
     void visualise() override;
+
+
 };
 
 #endif /* ADJACENCY_MATRIX_GRAPH_HPP_ */

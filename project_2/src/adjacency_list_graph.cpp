@@ -7,15 +7,15 @@ std::unique_ptr<Graph> AdjacencyListGraph::createGraph(std::istream& is)
     return std::make_unique<AdjacencyListGraph>();
 }
 
-void AdjacencyListGraph::insertVertex(Vertex vertex)
+void AdjacencyListGraph::insertVertex(Vertex v)
 {
 }
 
-void AdjacencyListGraph::insertEdge(Vertex vertex_1, Vertex vertex_2)
+void AdjacencyListGraph::insertEdge(Vertex v1, Vertex v2, size_t weight)
 {
 }
 
-void AdjacencyListGraph::removeVertex(Vertex vertex)
+void AdjacencyListGraph::removeVertex(Vertex v)
 {
 }
 
@@ -23,12 +23,12 @@ void AdjacencyListGraph::removeEdge(Edge edge)
 {
 }
 
-std::vector<Edge> AdjacencyListGraph::incidentEdges(Vertex vertex)
+std::vector<Edge> AdjacencyListGraph::incidentEdges(Vertex v)
 {
 return std::vector<Edge>();
 }
 
-bool AdjacencyListGraph::areAdjacent(Vertex vertex_1, Vertex vertex_2)
+bool AdjacencyListGraph::areAdjacent(Vertex v1, Vertex v2)
 {
 return false;
 }
