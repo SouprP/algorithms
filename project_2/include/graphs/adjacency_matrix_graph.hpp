@@ -39,17 +39,19 @@ class AdjacencyMatrixGraph : public Graph
 
     // use of virtual is optional here
     // but I am to lazy to remove it
-    virtual void insertVertex(Vertex vertex);
-    virtual void insertEdge(Vertex vertex_1, Vertex vertex_2);
+    void insertVertex(Vertex vertex) override;
+    void insertEdge(Vertex vertex_1, Vertex vertex_2) override;
 
-    virtual void removeVertex(Vertex vertex);
-    virtual void removeEdge(Edge edge);
+    void removeVertex(Vertex vertex) override;
+    void removeEdge(Edge edge) override;
 
     // list of edges connected to this vertex
-    virtual std::vector<Edge> incidentEdges(Vertex vertex);
+    std::vector<Edge> incidentEdges(Vertex vertex) override;
 
     // are vertex V1 and V2 connected by an edge
-    virtual bool areAdjacent(Vertex vertex_1, Vertex vertex_2); 
+    bool areAdjacent(Vertex vertex_1, Vertex vertex_2) override;
+
+    void visualise() override;
 };
 
 #endif /* ADJACENCY_MATRIX_GRAPH_HPP_ */

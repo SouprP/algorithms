@@ -9,24 +9,17 @@
 #include <graphs/adjacency_matrix_graph.hpp>
 #include <graphs/adjacency_list_graph.hpp>
 
-#define DATA_DIR_PATH
+#define DATA_DIR "../sp_data/"
 
 
-const std::filesystem::path dataDirectoryPath{DATA_DIR_PATH};
+const std::filesystem::path dataDirectoryPath{DATA_DIR};
 
 int main(int argc, char* argv[])
 {
-    auto [inputFile, refFile] = GENERATE(std::make_tuple(dataDirectoryPath / "graph" / "graphV10D0.5.txt",
-                                                         dataDirectoryPath / "sp_result" / "spV10D0.5.txt"),
-                                         std::make_tuple(dataDirectoryPath / "graph" / "graphV30D0.25.txt",
-                                                         dataDirectoryPath / "sp_result" / "spV30D0.25.txt"),
-                                         std::make_tuple(dataDirectoryPath / "graph" / "graphV200D0.75.txt",
-                                                         dataDirectoryPath / "sp_result" / "spV200D0.75.txt"));
+    auto inputFile = dataDirectoryPath / "graph" / "graphV10D0.5.txt";
+    std::ifstream inputStream{inputFile};
 
-
-    std::ifstream inputStream{inputFile}, refStream{refFile};
-
-
+    std::cout << inputFile.c_str() << std::endl;
     auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
     return 0;
 }

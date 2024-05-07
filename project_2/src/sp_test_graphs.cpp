@@ -10,8 +10,9 @@
 #include <filesystem>
 #include <fstream>
 
-// defined in CMakeLists.txt
+#ifndef DATA_DIR_PATH
 #define DATA_DIR_PATH
+#endif
 
 using namespace std::string_literals;
 

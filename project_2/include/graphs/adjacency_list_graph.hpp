@@ -27,6 +27,22 @@ class AdjacencyListGraph : public Graph
     // TODO: implement all required methods
 
     static std::unique_ptr<Graph> createGraph(std::istream& is);
+
+    // use of virtual is optional here
+    // but I am to lazy to remove it
+    void insertVertex(Vertex vertex) override;
+    void insertEdge(Vertex vertex_1, Vertex vertex_2) override;
+
+    void removeVertex(Vertex vertex) override;
+    void removeEdge(Edge edge) override;
+
+    // list of edges connected to this vertex
+    std::vector<Edge> incidentEdges(Vertex vertex) override;
+
+    // are vertex V1 and V2 connected by an edge
+    bool areAdjacent(Vertex vertex_1, Vertex vertex_2) override;
+
+    void visualise() override;
 };
 
 #endif /* ADJACENCY_LIST_GRAPH_HPP_ */
