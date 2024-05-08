@@ -25,20 +25,47 @@ class AdjacencyListGraph : public Graph
   */
   public:
     // TODO: implement all required methods
-
+    
     static std::unique_ptr<Graph> createGraph(std::istream& is);
 
-    void insertVertex(Vertex vertex) override;
-    void insertEdge(Vertex v1, Vertex v2, size_t weight) override;
+    /**
+     * 
+     *           UPDATE METHODS
+     * 
+    */
 
-    void removeVertex(Vertex v) override;
-    void removeEdge(Edge edge) override;
+    void insertVertex(Vertex* v) override;
+    void insertEdge(Vertex* v1, Vertex* v2, size_t weight) override;
+    void removeVertex(Vertex* v) override;
+    void removeEdge(Edge* edge) override;
 
-    // list of edges connected to this vertex
-    std::vector<Edge> incidentEdges(Vertex v) override;
+    /**
+     * 
+     *           ITERATION METHODS
+     * 
+    */
+    
+    std::vector<Edge*> incidentEdges(Vertex* v) override;
+    std::vector<Edge*> edges() override;
+    std::vector<Vertex*> vertices() override;
 
-    // are vertex V1 and V2 connected by an edge
-    bool areAdjacent(Vertex v1, Vertex v2) override;
+    /**
+     * 
+     *           ACCESS METHODS
+     * 
+    */
+
+    std::vector<Vertex*> endVertices(Edge* edge) override;
+    Vertex* opposite(Vertex* v, Edge* egde) override;
+    bool areAdjacent(Vertex* v1, Vertex* v2) override;
+    void replace(Vertex* v, std::string label) override;
+    void replace(Edge* edge, size_t weight) override; 
+
+    /**
+     * 
+     *           UTILITY METHONDS
+     * 
+    */
 
     void visualise() override;
 };

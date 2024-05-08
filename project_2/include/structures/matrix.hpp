@@ -1,5 +1,5 @@
-#ifndef MATRIX_HPP
-#define MATRIX_HPP
+#ifndef MATRIX_HPP_
+#define MATRIX_HPP_
 
 #include <structures/dynamic_array.hpp>
 #include <iostream>
@@ -36,6 +36,19 @@ class Matrix{
 
             return matrix[row][column];
         }
+
+        std::vector<T> get_row(size_t row){
+            return matrix[row];
+        }
+
+        std::vector<std::vector<T>> get_rows(){
+            return matrix;
+        }
+
+        void remove_row(size_t index){
+            matrix.erase(matrix.begin() + index);
+        }
+
 };
 
 #endif
