@@ -4,6 +4,9 @@
 #include <memory>
 
 #include "graphs/graph.hpp"
+#include <utils/file.hpp>
+#include <unordered_map>
+#include <list>
 
 class AdjacencyListGraph : public Graph
 {
@@ -23,6 +26,13 @@ class AdjacencyListGraph : public Graph
    *    D - [ C ]
    * 
   */
+  private:
+    size_t size;
+
+    std::unordered_map<Vertex*, std::list<Vertex*>> v_map;
+    std::vector<Vertex*> v_vector;
+    std::vector<Edge*> e_vector;
+
   public:
     // TODO: implement all required methods
     

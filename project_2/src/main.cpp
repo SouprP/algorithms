@@ -21,11 +21,20 @@ int main(int argc, char* argv[])
     std::ifstream inputStream{inputFile};
 
     //std::cout << inputFile.c_str() << std::endl;
-    auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
-    //graph.get()->insertVertex(Vertex());
+
+    //auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
+    auto graph = AdjacencyListGraph::createGraph(inputStream);
+
     Vertex* v = graph.get()->vertices().at(1);
     Edge* e = graph.get()->edges().at(1);
+
+
+    std::cout << "Vertex: " << v->index << std::endl;
+    std::cout << "Edge: " << e->v1->index << ", " 
+        << e->v2->index <<std::endl;
+    std::cout << "-------------------" << std::endl;
     graph.get()->visualise();
+    std::cout << "-------------------" << std::endl;
 
     auto G = graph.get();
 
@@ -36,8 +45,12 @@ int main(int argc, char* argv[])
      *          THESE WORK
      * 
     */
+
+    // insertVertex and insertEdge work
+    // because the correct graph is created
+
     //graph.get()->removeEdge(e); 
-    //graph.get()->removeVertex(v);
+    graph.get()->removeVertex(v);
 
     //for(auto obj : graph.get()->incidentEdges(v))
         //std::cout << "Incident edge: " << obj->weight << std::endl;
@@ -54,10 +67,10 @@ int main(int argc, char* argv[])
     // 0 = false
     // 1 = true
     // V1 and V2 are adjacent
-    std::cout << G->areAdjacent(G->vertices()[0], G->vertices()[1]) << std::endl;
+    //std::cout << G->areAdjacent(G->vertices()[0], G->vertices()[1]) << std::endl;
 
     // V1 and V4 are not adjacent
-    std::cout << G->areAdjacent(G->vertices()[0], G->vertices()[3]) << std::endl;
+    //std::cout << G->areAdjacent(G->vertices()[0], G->vertices()[3]) << std::endl;
 
     /**
      * 
@@ -66,7 +79,6 @@ int main(int argc, char* argv[])
     */
     
     // everything works! yay!
-    // kys
 
     std::cout << "-------------------" << std::endl;
     graph.get()->visualise();

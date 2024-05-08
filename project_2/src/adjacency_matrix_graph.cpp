@@ -66,6 +66,7 @@ void AdjacencyMatrixGraph::removeVertex(Vertex* v)
 
             // This commented code, deletes rows and cols,
             // and may be a little buggy
+            // so dont use it
 
             //for(auto obj : matrix->get_rows())
                 //obj.erase(obj.begin() + index);
