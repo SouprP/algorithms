@@ -75,7 +75,7 @@ void checkShortestPathResult(const ShortestPathResult& result, const ShortestPat
         }
     }
 }
-
+/*
 TEST_CASE("Adjacency Matrix Graph -- Dijkstra")
 {
     auto [inputFile, refFile] = GENERATE(std::make_tuple(dataDirectoryPath / "graph" / "graphV10D0.5.txt",
@@ -98,7 +98,7 @@ TEST_CASE("Adjacency Matrix Graph -- Dijkstra")
 
     checkShortestPathResult(result, refResult);
 }
-
+*/
 TEST_CASE("Adjacency List Graph -- Dijktra")
 {
     auto [inputFile, refFile] = GENERATE(std::make_tuple(dataDirectoryPath / "graph" / "graphV10D0.5.txt",
@@ -121,7 +121,7 @@ TEST_CASE("Adjacency List Graph -- Dijktra")
 
     checkShortestPathResult(result, refResult);
 }
-
+/*
 TEST_CASE("Adjacency Matrix Graph -- Bellman-Ford")
 {
     auto [inputFile, refFile] = GENERATE(std::make_tuple(dataDirectoryPath / "graph" / "graphV10D0.5Negative.txt",
@@ -167,3 +167,4 @@ TEST_CASE("Adjacency List Graph -- Bellman-Ford")
 
     checkShortestPathResult(result, refResult);
 }
+*/

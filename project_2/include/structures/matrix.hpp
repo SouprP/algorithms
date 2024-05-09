@@ -1,7 +1,6 @@
 #ifndef MATRIX_HPP_
 #define MATRIX_HPP_
 
-#include <structures/dynamic_array.hpp>
 #include <iostream>
 #include <vector>
 

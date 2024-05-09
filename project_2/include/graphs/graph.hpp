@@ -48,6 +48,7 @@ class Graph
     */
 
     virtual void visualise() = 0;
+    virtual Vertex* get_starting_vertex() = 0;
 };
 
 #endif /* GRAPH_HPP_ */

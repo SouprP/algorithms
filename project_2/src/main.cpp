@@ -8,6 +8,7 @@
 
 #include <graphs/adjacency_matrix_graph.hpp>
 #include <graphs/adjacency_list_graph.hpp>
+#include <graphs/shortest_path_algorithms.hpp>
 
 //#define DATA_DIR "../sp_data/"
 #define DATA_DIR "./"
@@ -20,6 +21,7 @@ int main(int argc, char* argv[])
     auto inputFile = dataDirectoryPath / "graph_test.txt";
     std::ifstream inputStream{inputFile};
 
+    /*
     //std::cout << inputFile.c_str() << std::endl;
 
     //auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
@@ -46,6 +48,7 @@ int main(int argc, char* argv[])
      * 
     */
 
+    /*
     // insertVertex and insertEdge work
     // because the correct graph is created
 
@@ -80,7 +83,16 @@ int main(int argc, char* argv[])
     
     // everything works! yay!
 
-    std::cout << "-------------------" << std::endl;
-    graph.get()->visualise();
+    //std::cout << "-------------------" << std::endl;
+    //graph.get()->visualise();
+
+    auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
+
+    ShortestPathResult result, refResult;
+
+    int sourceIndex = 2;
+
+    //dijkstra(*graph, sourceIndex, result);
+    //dijkstra(*graph, sourceIndex, result);
     return 0;
 }

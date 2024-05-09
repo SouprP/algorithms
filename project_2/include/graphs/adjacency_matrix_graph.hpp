@@ -33,6 +33,7 @@ class AdjacencyMatrixGraph : public Graph
   */
   private:
     Matrix<Edge*>* matrix;
+    Vertex* starting_vertex;
     size_t size;
     
     std::vector<Vertex*> v_vector;
@@ -83,6 +84,7 @@ class AdjacencyMatrixGraph : public Graph
     */
 
     void visualise() override;
+    Vertex* get_starting_vertex() override;
 };
 
 #endif /* ADJACENCY_MATRIX_GRAPH_HPP_ */

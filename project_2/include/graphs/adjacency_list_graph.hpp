@@ -27,6 +27,7 @@ class AdjacencyListGraph : public Graph
    * 
   */
   private:
+    Vertex* starting_vertex;
     size_t size;
 
     std::unordered_map<Vertex*, std::list<Vertex*>> v_map;
@@ -78,6 +79,7 @@ class AdjacencyListGraph : public Graph
     */
 
     void visualise() override;
+    Vertex* get_starting_vertex() override;
 };
 
 #endif /* ADJACENCY_LIST_GRAPH_HPP_ */

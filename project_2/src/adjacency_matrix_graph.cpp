@@ -8,7 +8,7 @@ std::unique_ptr<Graph> AdjacencyMatrixGraph::createGraph(std::istream& is)
     // Graph properties
     size_t graph_size = reader.get_graph_size();
     size_t edges_count = reader.get_edges_count();
-    size_t starting_vertex = reader.get_starting_vertex();
+    size_t starting_vertex_index = reader.get_starting_vertex();
 
     // Graph creation and setup
     auto graph = std::make_unique<AdjacencyMatrixGraph>();
@@ -24,6 +24,12 @@ std::unique_ptr<Graph> AdjacencyMatrixGraph::createGraph(std::istream& is)
         Vertex* v1 = new Vertex(data[0], false);
         Vertex* v2 = new Vertex(data[1], false);
         size_t weigth = data[2];
+
+        if(v1->index == starting_vertex_index)
+            graph.get()->starting_vertex = v1;
+
+        if(v2->index == starting_vertex_index)
+            graph.get()->starting_vertex = v2;
         
         //std::cout << data[0] << " " << data[1] << " " << data[2] << std::endl;
         graph.get()->insertVertex(v1);
@@ -184,3 +190,8 @@ void AdjacencyMatrixGraph::visualise()
         std::cout << std::endl;
     }
 */
+
+Vertex* AdjacencyMatrixGraph::get_starting_vertex()
+{
+    return starting_vertex;
+}

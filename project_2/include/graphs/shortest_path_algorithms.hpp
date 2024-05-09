@@ -6,6 +6,7 @@
 #include <map>
 #include <utility>
 #include <vector>
+#include <queue>
 
 /*
  * Klucz slownika to indeks wierzchołka końcowego
