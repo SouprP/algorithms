@@ -60,7 +60,7 @@ void AdjacencyMatrixGraph::insertEdge(Vertex* v1, Vertex* v2, size_t weight)
     Edge* edge = new Edge(v1, v2, weight);
     e_vector.push_back(edge);
 
-    matrix->insert(edge, v1->index, v2->index);
+    //matrix->insert(edge, v1->index, v2->index);
     matrix->insert(edge, v2->index, v1->index);
 }
 void AdjacencyMatrixGraph::removeVertex(Vertex* v)

@@ -58,6 +58,23 @@ void AdjacencyListGraph::insertEdge(Vertex* v1, Vertex* v2, size_t weight)
 
     if(v_map.size() == 0){
         std::list<Vertex*> v1_list;
+        v1_list.push_back(v2);
+
+        v_map.emplace(v1, v1_list);
+        return;
+    }
+
+    if(v_map.find(v1) != v_map.end()){
+        v_map[v1].push_back(v2);
+    }else{
+        std::list<Vertex*> v1_list;
+        v1_list.push_back(v2);
+
+        v_map.emplace(v1, v1_list);
+    }
+    /*
+    if(v_map.size() == 0){
+        std::list<Vertex*> v1_list;
         std::list<Vertex*> v2_list;
 
         v1_list.push_back(v2);
@@ -85,6 +102,7 @@ void AdjacencyListGraph::insertEdge(Vertex* v1, Vertex* v2, size_t weight)
 
         v_map.emplace(v2, v2_list);
     }
+    */
     
 }
 
@@ -115,7 +133,7 @@ void AdjacencyListGraph::removeEdge(Edge* edge)
     Vertex* v2 = edge->v2;
 
     v_map.at(v1).remove(v2);
-    v_map.at(v2).remove(v1);
+    //v_map.at(v2).remove(v1);
 
     for(size_t i = 0; i < e_vector.size(); i++)
         if(e_vector[i] == edge)

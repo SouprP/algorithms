@@ -5,7 +5,6 @@
 
 #include <catch2/catch.hpp>
 #include <structures/matrix.hpp>
-#include <utils/generator.hpp>
 
 #include <graphs/adjacency_matrix_graph.hpp>
 #include <graphs/adjacency_list_graph.hpp>
@@ -23,8 +22,8 @@ int main(int argc, char* argv[])
     auto inputFile = dataDirectoryPath / "graph_test.txt";
     std::ifstream inputStream{inputFile};
 
-    Generator gen = Generator();
-    gen.generate_graph(4, 100);
+    FileWriter writer = FileWriter();
+    writer.write(10, 10);
     std::fstream file(FILE_NAME);
 
     //if(is){
@@ -34,7 +33,7 @@ int main(int argc, char* argv[])
     //}
         
     
-    return 1;
+    //return 1;
     //std::string line;
     //while(std::getline(*stream.get(), line))
     //    std::cout << line;
@@ -50,11 +49,11 @@ int main(int argc, char* argv[])
     Edge* e = graph.get()->edges().at(1);
 
 
-    //std::cout << "Vertex: " << v->index << std::endl;
-    //std::cout << "Edge: " << e->v1->index << ", " 
-    //    << e->v2->index <<std::endl;
+    std::cout << "Vertex: " << v->index << std::endl;
+    std::cout << "Edge: " << e->v1->index << ", " 
+        << e->v2->index <<std::endl;
     std::cout << "-------------------" << std::endl;
-    //graph.get()->visualise();
+    graph.get()->visualise();
     std::cout << "-------------------" << std::endl;
 
     auto G = graph.get();
@@ -102,8 +101,8 @@ int main(int argc, char* argv[])
     
     // everything works! yay!
 
-    //std::cout << "-------------------" << std::endl;
-    //graph.get()->visualise();
+    std::cout << "-------------------" << std::endl;
+    graph.get()->visualise();
 
     //auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
 
