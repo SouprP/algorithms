@@ -14,21 +14,21 @@ std::unique_ptr<Graph> AdjacencyListGraph::createGraph(std::istream& is)
     auto graph = std::make_unique<AdjacencyListGraph>();
 
         for(size_t index = 1; index < reader.get_lines().size() - 1; index++){
-        std::vector<size_t> data = reader.parse(reader.get_lines()[index]);
-        Vertex* v1 = new Vertex(data[0], false);
-        Vertex* v2 = new Vertex(data[1], false);
-        size_t weigth = data[2];
+            std::vector<size_t> data = reader.parse(reader.get_lines()[index]);
+            Vertex* v1 = new Vertex(data[0], false);
+            Vertex* v2 = new Vertex(data[1], false);
+            size_t weigth = data[2];
 
-        if(v1->index == starting_vertex_index)
-            graph.get()->starting_vertex = v1;
+            if(v1->index == starting_vertex_index)
+                graph.get()->starting_vertex = v1;
 
-        if(v2->index == starting_vertex_index)
-            graph.get()->starting_vertex = v2;
-        
-        //std::cout << data[0] << " " << data[1] << " " << data[2] << std::endl;
-        graph.get()->insertVertex(v1);
-        graph.get()->insertVertex(v2);
-        graph.get()->insertEdge(v1, v2, weigth);
+            if(v2->index == starting_vertex_index)
+                graph.get()->starting_vertex = v2;
+            
+            //std::cout << data[0] << " " << data[1] << " " << data[2] << std::endl;
+            graph.get()->insertVertex(v1);
+            graph.get()->insertVertex(v2);
+            graph.get()->insertEdge(v1, v2, weigth);
     }
 
     return graph;

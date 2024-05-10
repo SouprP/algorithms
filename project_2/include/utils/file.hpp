@@ -5,13 +5,21 @@
 #include <vector>
 #include <istream>
 #include <sstream>
+#include <random>
+
+#include <utils/node.hpp>
+
+#define FILE_NAME "graph.txt"
+#define MIN_WEIGHT 1
+#define MAX_WEIGHT 100
 
 class FileReader{
     private:
         std::vector<std::string> data;
 
-        void read_file();
     public:
+        FileReader();
+        
         FileReader(std::istream& is){
             std::string output;
 
@@ -29,7 +37,7 @@ class FileReader{
         size_t get_size(){
             return data.size();
         }
-
+        
     std::vector<size_t> parse(std::string line){
         std::vector<size_t> values;
         size_t value;
@@ -56,13 +64,32 @@ class FileReader{
 
 };
 
-template <typename T>
 class FileWriter{
-    private:
-        size_t size;
-
     public:
-        void write();
+        FileWriter(){
+            // init srand at current time
+            srand(time(NULL));
+        }
+
+        void write(size_t size, uint8_t density){
+            if(density > 100)
+                return;
+
+            std::stringstream buffer;
+
+            // max edges in a graph = V * (V-1) / 2
+            size_t max_edges = size * (size - 1) / 2;
+            float_t perc = (float_t) density / 100;
+            size_t edge_per_v = max_edges * perc;
+
+            std::vector<Edge*> e_vector;
+            buffer << size << " " << edge_per_v << "\n";
+            //for()
+        }
+
+        std::string get_file_name(){
+            return FILE_NAME;
+        }
 };
 
 #endif
