@@ -34,6 +34,7 @@ class AdjacencyMatrixGraph : public Graph
   private:
     Matrix<Edge*>* matrix;
     Vertex* starting_vertex;
+    size_t starting_vertex_index;
     size_t size;
     
     std::vector<Vertex*> v_vector;

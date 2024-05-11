@@ -3,7 +3,7 @@ project(graph_algorithms)
 
 set (CMAKE_CXX_STANDARD 17)
 
-add_library(graph_algorithms_lib src/adjacency_list_graph.cpp src/adjacency_matrix_graph.cpp)
+add_library(graph_algorithms_lib src/adjacency_list_graph.cpp src/adjacency_matrix_graph.cpp src/shortest_path_algorithms.cpp)
 target_include_directories(graph_algorithms_lib PUBLIC include/)
 
 add_executable(test_sp

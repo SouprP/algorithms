@@ -19,18 +19,37 @@ const std::filesystem::path dataDirectoryPath{DATA_DIR};
 int main(int argc, char* argv[])
 {
     //auto inputFile = dataDirectoryPath / "graph" / "graphV10D0.5.txt";
-    auto inputFile = dataDirectoryPath / "graph_test.txt";
-    std::ifstream inputStream{inputFile};
+    
+    
+    //auto inputFile = dataDirectoryPath / "graph_test.txt";
+    auto inputFile = dataDirectoryPath / FILE_NAME;
+    //std::ifstream inputStream{inputFile};
 
-    FileWriter writer = FileWriter();
-    writer.write(10, 10);
-    std::fstream file(FILE_NAME);
+    //FileWriter writer = FileWriter();
+    //writer.write(4, 100);
+    //std::fstream file(FILE_NAME);
 
     //if(is){
     //    std::string line;
     //    while(std::getline(*is, line))
     //        std::cout << line;
     //}
+
+    
+
+    std::ifstream inputStream{inputFile}; //, refStream{refFile};
+    //auto graph = AdjacencyListGraph::createGraph(inputStream);
+    auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
+
+    ShortestPathResult result, refResult;
+    // //readShortestPathResult(refStream, refResult);
+
+    int sourceIndex = 5;
+    // inputStream >> sourceIndex;
+
+    dijkstra(*graph, sourceIndex, result);
+
+    //checkShortestPathResult(result, refResult);
         
     
     //return 1;
@@ -43,20 +62,20 @@ int main(int argc, char* argv[])
 
     //auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
     //auto graph = AdjacencyListGraph::createGraph(inputStream);
-    auto graph = AdjacencyListGraph::createGraph(file);
+    // auto graph = AdjacencyListGraph::createGraph(file);
     
-    Vertex* v = graph.get()->vertices().at(1);
-    Edge* e = graph.get()->edges().at(1);
+    // Vertex* v = graph.get()->vertices().at(1);
+    // Edge* e = graph.get()->edges().at(1);
 
 
-    std::cout << "Vertex: " << v->index << std::endl;
-    std::cout << "Edge: " << e->v1->index << ", " 
-        << e->v2->index <<std::endl;
-    std::cout << "-------------------" << std::endl;
-    graph.get()->visualise();
-    std::cout << "-------------------" << std::endl;
+    // std::cout << "Vertex: " << v->index << std::endl;
+    // std::cout << "Edge: " << e->v1->index << ", " 
+    //     << e->v2->index <<std::endl;
+    // std::cout << "-------------------" << std::endl;
+    // graph.get()->visualise();
+    // std::cout << "-------------------" << std::endl;
 
-    auto G = graph.get();
+    // auto G = graph.get();
 
 
 
@@ -101,8 +120,8 @@ int main(int argc, char* argv[])
     
     // everything works! yay!
 
-    std::cout << "-------------------" << std::endl;
-    graph.get()->visualise();
+    // std::cout << "-------------------" << std::endl;
+    // graph.get()->visualise();
 
     //auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
 

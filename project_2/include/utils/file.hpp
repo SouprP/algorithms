@@ -78,10 +78,10 @@ class FileWriter{
             // max edges in a graph = V * (V-1) / 2
             size_t max_edges = size * (size - 1) / 2;
             float_t perc = (float_t) density / 100;
-            size_t edge_per_v = size * perc;
+            size_t edge_per_v = (size - 1) * perc;
 
             std::vector<Edge*> e_vector;
-            buffer << size << " " << edge_per_v << "\n";
+            buffer << size << " " << edge_per_v * size << "\n";
             
             // go through all verteces
             // in order to create edges for them

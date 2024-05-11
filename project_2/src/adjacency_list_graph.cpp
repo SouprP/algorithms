@@ -8,10 +8,11 @@ std::unique_ptr<Graph> AdjacencyListGraph::createGraph(std::istream& is)
     // Graph properties
     size_t graph_size = reader.get_graph_size();
     size_t edges_count = reader.get_edges_count();
-    size_t starting_vertex_index = reader.get_starting_vertex();
+    //size_t starting_vertex_index = reader.get_starting_vertex();
 
     // Graph creation and setup
     auto graph = std::make_unique<AdjacencyListGraph>();
+    graph.get()->starting_vertex_index = reader.get_starting_vertex();
 
         for(size_t index = 1; index < reader.get_lines().size() - 1; index++){
             std::vector<size_t> data = reader.parse(reader.get_lines()[index]);
@@ -19,11 +20,11 @@ std::unique_ptr<Graph> AdjacencyListGraph::createGraph(std::istream& is)
             Vertex* v2 = new Vertex(data[1], false);
             size_t weigth = data[2];
 
-            if(v1->index == starting_vertex_index)
-                graph.get()->starting_vertex = v1;
+            //if(v1->index == starting_vertex_index)
+                //graph.get()->starting_vertex = v1;
 
-            if(v2->index == starting_vertex_index)
-                graph.get()->starting_vertex = v2;
+            //if(v2->index == starting_vertex_index)
+                //graph.get()->starting_vertex = v2;
             
             //std::cout << data[0] << " " << data[1] << " " << data[2] << std::endl;
             graph.get()->insertVertex(v1);
@@ -146,8 +147,11 @@ std::vector<Edge*> AdjacencyListGraph::incidentEdges(Vertex* v)
 {
     std::vector<Edge*> temp;
 
+    //for(auto obj : v_vector)
+        //if(areAdjacent(v, obj))
+            
     for(auto obj : e_vector)
-        if(obj->v1 == v || obj->v2 == v)
+        if(obj->v1 == v)
             temp.push_back(obj);
 
     return temp;
@@ -185,8 +189,8 @@ bool AdjacencyListGraph::areAdjacent(Vertex* v1, Vertex* v2)
     if(v_map.find(v1) == v_map.end())
         return false;
 
-    if(v_map.find(v2) == v_map.end())
-        return false;
+    //if(v_map.find(v2) == v_map.end())
+        //return false;
 
     for(auto obj : v_map[v1])
         if(obj == v2)
@@ -221,5 +225,10 @@ void AdjacencyListGraph::visualise()
 }
 Vertex* AdjacencyListGraph::get_starting_vertex()
 {
-    return starting_vertex;
+    for(auto obj : v_vector)
+        if(obj->index == starting_vertex_index)
+            return obj;
+    
+    return nullptr;
+    //return starting_vertex;
 }
