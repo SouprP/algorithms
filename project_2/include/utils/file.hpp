@@ -11,7 +11,7 @@
 
 #define FILE_NAME "graph.txt"
 #define MIN_WEIGHT 1
-#define MAX_WEIGHT 100
+#define MAX_WEIGHT std::pow(2, 12) // 4096
 
 class FileReader{
     private:

@@ -225,7 +225,33 @@ void AdjacencyListGraph::visualise()
 }
 
 void AdjacencyListGraph::visualiseFile(){
+    std::stringstream file_name; 
+    file_name << "graph_" << v_vector.size() << "V_" << e_vector.size() << "E.txt";
 
+    // output file contents
+    std::stringstream output;
+
+    // header (vertex count, edges count)
+    output << v_vector.size() << " " << e_vector.size() << "\n";
+
+    // input edges
+    for(auto edge : e_vector)
+        output << edge->v1->index << " " << edge->v2->index << " " << edge->weight << "\n";
+
+    // ending - starting vertex index
+    output << get_starting_vertex()->index;
+
+
+    // remove the file if it exists
+    std::remove(file_name.str().c_str());
+
+    // create a new file
+    std::ofstream output_file(file_name.str());
+    
+    if(output_file){
+        output_file << output.str();
+        output_file.close();
+    }
 }
 
 Vertex* AdjacencyListGraph::get_starting_vertex()

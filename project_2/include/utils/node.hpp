@@ -9,8 +9,7 @@ class Vertex{
         std::string label;
         size_t index;
         bool visited;
-
-        //Vertex() : index(0), visited(false){}
+        
         Vertex(size_t index, bool visited){
             std::stringstream ss;
             ss << index;

@@ -19,6 +19,7 @@ const std::filesystem::path dataDirectoryPath{DATA_DIR};
 
 int main(int argc, char* argv[])
 {
+    Edge* edges[5][10] = {nullptr};
     //std::cout << "current: " << std::filesystem::current_path() << std::endl; 
     //auto inputFile = dataDirectoryPath / "graph" / "graphV10D0.5.txt";
     
@@ -44,20 +45,21 @@ int main(int argc, char* argv[])
     //while(std::getline(inputStream, line))
     //    std::cout << line;
     
-    auto graph = AdjacencyListGraph::createGraph(inputStream);
-    //auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
+    //auto graph = AdjacencyListGraph::createGraph(inputStream);
+    auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
+    graph.get()->visualiseFile();
 
     ShortestPathResult result, refResult;
     // //readShortestPathResult(refStream, refResult);
 
     int sourceIndex = 5;
     // inputStream >> sourceIndex;
-    try{
-        //dijkstra(*graph, sourceIndex, result);
-        bellmanFord(*graph, sourceIndex, result);
-    }catch(std::exception ex){
-        //std::cout << ex.what() << std::endl;
-    }
+    //try{
+        dijkstra(*graph, sourceIndex, result);
+        //bellmanFord(*graph, sourceIndex, result);
+    //}catch(std::exception ex){
+    //    std::cout << ex.what() << std::endl;
+    //}
     //checkShortestPathResult(result, refResult);
         
     

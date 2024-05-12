@@ -1,4 +1,4 @@
-# data_structures
+# algorithms
 
 A collection of projects to research diffrent algorithms.
 ## [Project 1](project_1)
