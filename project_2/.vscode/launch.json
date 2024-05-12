@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "Debug eff",
+            "type": "cppdbg",
+            "request": "launch",
+            "cwd": "${workspaceRoot}/build",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "program": "${workspaceRoot}/build/efficiency_tests"
+        }
+    ]
+}

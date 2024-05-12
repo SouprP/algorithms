@@ -2,6 +2,7 @@
 #define ADJACENCY_MATRIX_GRAPH_HPP_
 
 #include <memory>
+#include <map>
 
 #include "graphs/graph.hpp"
 #include <structures/matrix.hpp>
@@ -33,6 +34,8 @@ class AdjacencyMatrixGraph : public Graph
   */
   private:
     Matrix<Edge*>* matrix;
+    //std::map<Vertex*, std::map<Vertex*, Edge*>> matrix;
+    //std::vector<std::vector<Edge*>> matrix;
     Vertex* starting_vertex;
     size_t starting_vertex_index;
     size_t size;
@@ -52,7 +55,7 @@ class AdjacencyMatrixGraph : public Graph
     */
 
     void insertVertex(Vertex* v) override;
-    void insertEdge(Vertex* v1, Vertex* v2, size_t weight) override;
+    void insertEdge(Vertex* v1, Vertex* v2, int weight) override;
     void removeVertex(Vertex* v) override;
     void removeEdge(Edge* edge) override;
 
@@ -76,7 +79,7 @@ class AdjacencyMatrixGraph : public Graph
     Vertex* opposite(Vertex* v, Edge* egde) override;
     bool areAdjacent(Vertex* v1, Vertex* v2) override;
     void replace(Vertex* v, std::string label) override;
-    void replace(Edge* edge, size_t weight) override; 
+    void replace(Edge* edge, int weight) override; 
 
     /**
      * 
@@ -85,6 +88,7 @@ class AdjacencyMatrixGraph : public Graph
     */
 
     void visualise() override;
+    void visualiseFile() override;
     Vertex* get_starting_vertex() override;
 };
 

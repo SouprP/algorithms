@@ -4,18 +4,6 @@
 #include <iostream>
 #include <sstream>
 
-template<typename T>
-class Node{
-    public:
-        T value;
-        Node* next;
-
-        Node(T value){
-            this->value = value;
-            next = nullptr;
-        };
-};
-
 class Vertex{
     public:
         std::string label;
@@ -37,9 +25,9 @@ class Edge{
     public:
         Vertex* v1;
         Vertex* v2;
-        size_t weight;
+        int weight;
 
-        Edge(Vertex* v1, Vertex* v2, size_t weight){
+        Edge(Vertex* v1, Vertex* v2, int weight){
             this->v1 = v1;
             this->v2 = v2;
             this->weight = weight;

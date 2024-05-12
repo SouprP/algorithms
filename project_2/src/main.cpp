@@ -12,12 +12,14 @@
 
 //#define DATA_DIR "../sp_data/"
 #define DATA_DIR "./"
+//#define DATA_DIR "../Debug/"
 #define FILE_NAME "graph.txt"
 
 const std::filesystem::path dataDirectoryPath{DATA_DIR};
 
 int main(int argc, char* argv[])
 {
+    //std::cout << "current: " << std::filesystem::current_path() << std::endl; 
     //auto inputFile = dataDirectoryPath / "graph" / "graphV10D0.5.txt";
     
     
@@ -38,17 +40,24 @@ int main(int argc, char* argv[])
     
 
     std::ifstream inputStream{inputFile}; //, refStream{refFile};
-    //auto graph = AdjacencyListGraph::createGraph(inputStream);
-    auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
+    //std::string line;
+    //while(std::getline(inputStream, line))
+    //    std::cout << line;
+    
+    auto graph = AdjacencyListGraph::createGraph(inputStream);
+    //auto graph = AdjacencyMatrixGraph::createGraph(inputStream);
 
     ShortestPathResult result, refResult;
     // //readShortestPathResult(refStream, refResult);
 
     int sourceIndex = 5;
     // inputStream >> sourceIndex;
-
-    dijkstra(*graph, sourceIndex, result);
-
+    try{
+        //dijkstra(*graph, sourceIndex, result);
+        bellmanFord(*graph, sourceIndex, result);
+    }catch(std::exception ex){
+        //std::cout << ex.what() << std::endl;
+    }
     //checkShortestPathResult(result, refResult);
         
     

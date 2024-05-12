@@ -47,7 +47,7 @@ class AdjacencyListGraph : public Graph
     */
 
     void insertVertex(Vertex* v) override;
-    void insertEdge(Vertex* v1, Vertex* v2, size_t weight) override;
+    void insertEdge(Vertex* v1, Vertex* v2, int weight) override;
     void removeVertex(Vertex* v) override;
     void removeEdge(Edge* edge) override;
 
@@ -71,7 +71,7 @@ class AdjacencyListGraph : public Graph
     Vertex* opposite(Vertex* v, Edge* egde) override;
     bool areAdjacent(Vertex* v1, Vertex* v2) override;
     void replace(Vertex* v, std::string label) override;
-    void replace(Edge* edge, size_t weight) override; 
+    void replace(Edge* edge, int weight) override; 
 
     /**
      * 
@@ -80,6 +80,7 @@ class AdjacencyListGraph : public Graph
     */
 
     void visualise() override;
+    void visualiseFile() override;
     Vertex* get_starting_vertex() override;
 };
 

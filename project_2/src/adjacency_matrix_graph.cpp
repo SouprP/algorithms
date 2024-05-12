@@ -8,7 +8,7 @@ std::unique_ptr<Graph> AdjacencyMatrixGraph::createGraph(std::istream& is)
     // Graph properties
     size_t graph_size = reader.get_graph_size();
     size_t edges_count = reader.get_edges_count();
-    size_t starting_vertex_index = reader.get_starting_vertex();
+    //size_t starting_vertex_index = reader.get_starting_vertex();
 
     // Graph creation and setup
     auto graph = std::make_unique<AdjacencyMatrixGraph>();
@@ -24,7 +24,7 @@ std::unique_ptr<Graph> AdjacencyMatrixGraph::createGraph(std::istream& is)
         Vertex* v1 = new Vertex(data[0], false);
         Vertex* v2 = new Vertex(data[1], false);
         size_t weigth = data[2];
-
+ 
         //if(v1->index == starting_vertex_index)
         //    graph.get()->starting_vertex = v1;
 
@@ -55,13 +55,15 @@ void AdjacencyMatrixGraph::insertVertex(Vertex* v)
 
     v_vector.push_back(v);
 }
-void AdjacencyMatrixGraph::insertEdge(Vertex* v1, Vertex* v2, size_t weight)
+void AdjacencyMatrixGraph::insertEdge(Vertex* v1, Vertex* v2, int weight)
 {
-    Edge* edge = new Edge(v1, v2, weight);
+    // putting the v2 first, makes djikstra work for some
+    // stupid reason
+    Edge* edge = new Edge(v2, v1, weight);
     e_vector.push_back(edge);
 
-    //matrix->insert(edge, v1->index, v2->index);
-    matrix->insert(edge, v2->index, v1->index);
+    matrix->insert(edge, v1->index, v2->index);
+    //matrix->insert(edge, v2->index, v1->index);
 }
 void AdjacencyMatrixGraph::removeVertex(Vertex* v)
 {
@@ -104,6 +106,7 @@ std::vector<Edge*> AdjacencyMatrixGraph::incidentEdges(Vertex* v)
     std::vector<Edge*> temp;
     for(auto obj : matrix->get_row(v->index))
         if(obj != nullptr)
+            //std::cout << obj->weight << std::endl;
             temp.push_back(obj);
 
     return temp;
@@ -150,7 +153,7 @@ void AdjacencyMatrixGraph::replace(Vertex* v, std::string label)
 {
     v->label = label;
 }
-void AdjacencyMatrixGraph::replace(Edge* edge, size_t weight)
+void AdjacencyMatrixGraph::replace(Edge* edge, int weight)
 {
     edge->weight = weight;
     matrix->insert(edge, edge->v1->index, edge->v2->index);
@@ -174,22 +177,10 @@ void AdjacencyMatrixGraph::visualise()
         std::cout << std::endl;
     }
 }
-/*
-    for(size_t col = 0; col < size; col++){
-        for(size_t row = 0; row < size; row++){
-            Edge* edge = matrix->get(row, col);
-            size_t value = 0;
-            if(edge != nullptr)
-                value = edge->weight;
 
-            std::cout << value << " ";
-            if(row == col)
-                if(edge != nullptr)
-                    std::cout << "BREAK";
-        }
-        std::cout << std::endl;
-    }
-*/
+void AdjacencyMatrixGraph::visualiseFile(){
+
+}
 
 Vertex* AdjacencyMatrixGraph::get_starting_vertex()
 {

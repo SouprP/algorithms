@@ -44,7 +44,7 @@ void AdjacencyListGraph::insertVertex(Vertex* v)
     v_vector.push_back(v);
 }
 
-void AdjacencyListGraph::insertEdge(Vertex* v1, Vertex* v2, size_t weight)
+void AdjacencyListGraph::insertEdge(Vertex* v1, Vertex* v2, int weight)
 {
     for(auto obj : v_vector){
         if(obj->index == v1->index)
@@ -204,7 +204,7 @@ void AdjacencyListGraph::replace(Vertex* v, std::string label)
     v->label = label;
 }
 
-void AdjacencyListGraph::replace(Edge* edge, size_t weight)
+void AdjacencyListGraph::replace(Edge* edge, int weight)
 {
     edge->weight = weight;
 }
@@ -223,6 +223,11 @@ void AdjacencyListGraph::visualise()
     }
     
 }
+
+void AdjacencyListGraph::visualiseFile(){
+
+}
+
 Vertex* AdjacencyListGraph::get_starting_vertex()
 {
     for(auto obj : v_vector)
