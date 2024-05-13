@@ -5,7 +5,6 @@
 #include <map>
 
 #include "graphs/graph.hpp"
-#include <structures/matrix.hpp>
 #include <utils/file.hpp>
 #include <utils/node.hpp>
 
@@ -33,9 +32,7 @@ class AdjacencyMatrixGraph : public Graph
    * 
   */
   private:
-    Matrix<Edge*>* matrix;
-    //std::map<Vertex*, std::map<Vertex*, Edge*>> matrix;
-    //std::vector<std::vector<Edge*>> matrix;
+    Edge*** matrix;
     Vertex* starting_vertex;
     size_t starting_vertex_index;
     size_t size;

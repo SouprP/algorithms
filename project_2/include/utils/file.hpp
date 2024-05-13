@@ -36,9 +36,9 @@ class FileReader{
             return data.size();
         }
         
-    std::vector<size_t> parse(std::string line){
-        std::vector<size_t> values;
-        size_t value;
+    std::vector<int> parse(std::string line){
+        std::vector<int> values;
+        int value;
 
         std::istringstream stream(line);
         while(stream >> value)

@@ -15,10 +15,10 @@ std::unique_ptr<Graph> AdjacencyListGraph::createGraph(std::istream& is)
     graph.get()->starting_vertex_index = reader.get_starting_vertex();
 
         for(size_t index = 1; index < reader.get_lines().size() - 1; index++){
-            std::vector<size_t> data = reader.parse(reader.get_lines()[index]);
+            std::vector<int> data = reader.parse(reader.get_lines()[index]);
             Vertex* v1 = new Vertex(data[0], false);
             Vertex* v2 = new Vertex(data[1], false);
-            size_t weigth = data[2];
+            int weigth = data[2];
 
             //if(v1->index == starting_vertex_index)
                 //graph.get()->starting_vertex = v1;
