@@ -20,8 +20,13 @@ typedef std::chrono::high_resolution_clock::time_point TimeVar;
 #define duration(a) std::chrono::duration_cast<std::chrono::microseconds>(a).count()
 #define timeNow() std::chrono::high_resolution_clock::now()
 
-std::vector<int> GRAPH_SIZES = {10, 50, 100, 500, 1000};
-std::vector<int> DENSITIES = {25, 50, 75, 100};
+#define LOOP 1
+//std::vector<int> GRAPH_SIZES = {10, 50, 100, 250, 500};
+std::vector<int> GRAPH_SIZES = {250, 500};
+//std::vector<int> DENSITIES = {25, 50, 75, 100};
+std::vector<int> DENSITIES = {50};
+
+// START 15:15 dla 1000
 
 const std::filesystem::path dataDirectoryPath{DATA_DIR};
 
@@ -44,7 +49,8 @@ void time_test(){
             size_t l_bellman_time = 0;
 
 
-            for(int loop = 0; loop < 1; loop++){
+            for(int loop = 0; loop < LOOP; loop++){
+                std::cout << "started loop" << std::endl;
                 FileWriter writer = FileWriter();
                 writer.write(size, density);
                 std::fstream file(writer.get_file_name());
@@ -63,25 +69,29 @@ void time_test(){
                 dijkstra(*m_graph, sourceIndex, result);
                 end = timeNow();
                 m_dijkstra_time += duration(end - start);
-
+                std::cout << "d1" << std::endl;
                 // DIJKSTRA LIST
                 start = timeNow();
                 dijkstra(*l_graph, sourceIndex, result);
                 end = timeNow();
                 l_dijkstra_time += duration(end - start);
-
+                std::cout << "d2" << std::endl;
                 // BELLMAN-FORD MATRIX
                 start = timeNow();
                 bellmanFord(*m_graph, sourceIndex, result);
                 end = timeNow();
                 m_bellman_time += duration(end - start);
-
+                std::cout << "b1" << std::endl;
                 // BELLMAN-FORD LIST
                 start = timeNow();
                 bellmanFord(*l_graph, sourceIndex, result);
                 end = timeNow();
                 l_bellman_time += duration(end - start);
+                std::cout << "b2" << std::endl;
+                std::cout << loop << " ";
             }
+
+            std::cout << std::endl << std::endl;
 
             std::cout << "Matrix Djikstra:   " << m_dijkstra_time  << "us" << std::endl;
             std::cout << "Matrix Bellman:    " << m_bellman_time  << "us" << std::endl;
