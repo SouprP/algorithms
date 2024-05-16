@@ -76,11 +76,18 @@ void AdjacencyMatrixGraph::removeVertex(Vertex* v)
     for(size_t x = 0; x < size; x++)
         matrix[v->index][x] = nullptr;
     
+    for(size_t i = 0; i < v_vector.size(); i++)
+        if(v_vector.at(i) == v)
+            v_vector.erase(v_vector.begin() + i);
 }
 
 void AdjacencyMatrixGraph::removeEdge(Edge* edge)
 {
     matrix[edge->v1->index][edge->v2->index] = nullptr;
+
+    for(size_t i = 0; i < e_vector.size(); i++)
+        if(e_vector.at(i) == edge)
+            e_vector.erase(e_vector.begin() + i);
 }
 
 std::vector<Edge*> AdjacencyMatrixGraph::incidentEdges(Vertex* v)

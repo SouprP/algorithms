@@ -23,7 +23,7 @@ void dijkstra(Graph& graph, int sourceIndex, ShortestPathResult& result)
         vertex_map.emplace(obj, std::vector<Vertex*>{start_vertex});
         path_map.emplace(obj, INT32_MAX);
     }
-    std::cout << std::endl;
+    //std::cout << std::endl;
 
 
     // path to root (start_vertex) is 0, put in a map
@@ -116,9 +116,14 @@ bool bellmanFord(Graph& graph, int sourceIndex, ShortestPathResult& result)
 
     // path weight to source vertex is always 0
     path_map.at(start_vertex) = 0;
+
+    // were the weights updated?
+    //size_t no_update;
     
     // relaxing edges V-1 times
     for(size_t i = 0; i < graph.vertices().size() - 1; i++){
+        //no_update = 0;
+        
         for(auto& edge : graph.edges()){
             Vertex* v1 = edge->v1;
             Vertex* v2 = edge->v2;
@@ -130,17 +135,25 @@ bool bellmanFord(Graph& graph, int sourceIndex, ShortestPathResult& result)
                 path_map.at(v2) = new_distance;
                 vertex_map[v2] = vertex_map[v1];
                 vertex_map[v2].push_back(v2);
+                //continue;
             }
+
+           // no_update++;
         }
+
+        // nothing updated
+        // break out to not waste resources
+        //if(no_update == graph.edges().size());
+        //    break;
     }
 
     // DEBUG SYSTEM
-    // std::cout << "weight n map" << std::endl;
+    // std::cout << "weight map" << std::endl;
     // for(auto obj : path_map)
     //     std::cout << "Vertex: " << obj.first->index
     //         << ",path weight: " << obj.second << std::endl;
 
-    // std::cout << "vertex path f map" << std::endl;
+    // std::cout << "vertex path map" << std::endl;
     // for(auto obj : vertex_map){
     //     std::cout << obj.first->index << ": "; // << start_vertex->index;
     //     for(auto v : obj.second)

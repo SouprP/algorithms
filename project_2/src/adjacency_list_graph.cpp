@@ -58,21 +58,25 @@ void AdjacencyListGraph::insertEdge(Vertex* v1, Vertex* v2, int weight)
     e_vector.push_back(edge);
 
     if(v_map.size() == 0){
-        std::list<Vertex*> v1_list;
-        v1_list.push_back(v2);
+        std::list<Edge*> v1_list;
+        v1_list.push_back(edge);
 
         v_map.emplace(v1, v1_list);
         return;
     }
 
     if(v_map.find(v1) != v_map.end()){
-        v_map[v1].push_back(v2);
+        v_map[v1].push_back(edge);
     }else{
-        std::list<Vertex*> v1_list;
-        v1_list.push_back(v2);
+        std::list<Edge*> v1_list;
+        v1_list.push_back(edge);
 
         v_map.emplace(v1, v1_list);
     }
+
+
+
+
     /*
     if(v_map.size() == 0){
         std::list<Vertex*> v1_list;
@@ -109,22 +113,24 @@ void AdjacencyListGraph::insertEdge(Vertex* v1, Vertex* v2, int weight)
 
 void AdjacencyListGraph::removeVertex(Vertex* v)
 {
-
-    v_map.erase(v);
-
-    for(auto& pair : v_map)
-        pair.second.remove(v);
+    for(auto pair : v_map)
+        for(Edge* edge : pair.second)
+            if(edge->v2 == v || edge->v1 == v)
+                removeEdge(edge);
 
     //for(auto pair : v_map)
     //    for(size_t i = 0; i < pair.second.size(); i++)
     //        if(pair.second == v)
 
-
-
     for(size_t i = 0; i < v_vector.size(); i++)
         if(v_vector[i] == v)
             v_vector.erase(v_vector.begin() + i);
 
+    for(size_t i = 0; i < e_vector.size(); i++)
+        if(e_vector[i]->v1 == v || e_vector[i]->v2 == v)
+            e_vector.erase(e_vector.begin() + i);
+
+    v_map.erase(v);
     delete v;
 }
 
@@ -133,8 +139,7 @@ void AdjacencyListGraph::removeEdge(Edge* edge)
     Vertex* v1 = edge->v1;
     Vertex* v2 = edge->v2;
 
-    v_map.at(v1).remove(v2);
-    //v_map.at(v2).remove(v1);
+    v_map.at(v1).remove(edge);
 
     for(size_t i = 0; i < e_vector.size(); i++)
         if(e_vector[i] == edge)
@@ -192,8 +197,12 @@ bool AdjacencyListGraph::areAdjacent(Vertex* v1, Vertex* v2)
     //if(v_map.find(v2) == v_map.end())
         //return false;
 
-    for(auto obj : v_map[v1])
-        if(obj == v2)
+    //for(auto obj : v_map[v1])
+        //if(obj == v2)
+            //return true;
+
+    for(auto edge : v_map[v1])
+        if(edge->v2 = v2)
             return true;
 
     return false;
@@ -217,7 +226,7 @@ void AdjacencyListGraph::visualise()
     for(auto &pair : v_map){
         std::cout << "Vertex: " << pair.first->index << "[ ";
         for(auto value : pair.second)
-            std::cout << value->index << " ";
+            std::cout << "( " << value->v1->index << " -> " << value->v2->index << ")  ";
         
         std::cout << "]" << std::endl;
     }

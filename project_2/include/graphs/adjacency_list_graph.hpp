@@ -31,7 +31,7 @@ class AdjacencyListGraph : public Graph
     size_t starting_vertex_index;
     size_t size;
 
-    std::unordered_map<Vertex*, std::list<Vertex*>> v_map;
+    std::unordered_map<Vertex*, std::list<Edge*>> v_map;
     std::vector<Vertex*> v_vector;
     std::vector<Edge*> e_vector;
 
