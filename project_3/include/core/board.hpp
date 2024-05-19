@@ -6,23 +6,46 @@
 #include <stdint.h>
 
 #include <core/pieces/bishop.hpp>
-#include <core/interfaces/piece.h>
+#include <core/interface/piece.h>
+
+#define BOARD_FILE "../images/board_480px.png"
+
+#define X_OFFSET 480
+#define Y_OFFSET 25
+#define TILE_SIZE 60
 
 class Board{
+    /**
+     *      
+     *      0 R KN B Q K B KN R
+     *      1 P P  P P P P P P
+     *      2
+     *      3
+     *      4
+     *      5
+     *      6
+     *      7
+    */
     private:
-        //uint8_t board[8][8];
-        sf::RectangleShape tiles[8][8];
+        sf::RenderWindow* win;
+        sf::Texture b_texture;
+        sf::Sprite b_sprite;
+
+        Piece* board[8][8] = {nullptr};
+        //sf::RectangleShape tiles[8][8];
         std::vector<Piece*> pieces;
-        bool isFlipped;
 
-        void rotate(){
-
-        }
+        void apply_pieces();
     
     public:
-        void setup(){
+        Board(sf::RenderWindow* win);
 
-        }
+        // basic starting setup
+        void setup();
+        void setup_pieces();
+        void setup_pieces(bool isBlack);
+
+        void draw();
 };
 
 #endif

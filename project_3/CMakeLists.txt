@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.25.1)
 project(game_project)
 
-add_library(game_lib INTERFACE)
-target_include_directories(game_lib INTERFACE include/)
+add_library(game_lib 
+        src/board.cpp
+        )
+target_include_directories(game_lib PUBLIC include/)
 
 #set(SFML_STATIC_LIBRARIES TRUE)
 find_package(SFML 2.5 COMPONENTS graphics audio network REQUIRED)

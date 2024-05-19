@@ -1,33 +1,19 @@
 #ifndef BISHOP_HPP_
 #define BISHOP_HPP_
 
-#include <core/interfaces/piece.h>
+#include <core/interface/piece.h>
 #include <iostream>
 
-#define W_TEXTURE "../images/w_bishop.svg"
+#define W_TEXTURE "../images/w_bishop.png"
 #define B_TEXTURE "../images/b_bishop.png"
 #define WEIGHT 300
 
 class Bishop : public Piece{
-    private:
-        void load_texture(){
-            if(piece_color == PieceColor::WHITE)
-                texture.loadFromFile(W_TEXTURE);
-            else
-                texture.loadFromFile(B_TEXTURE);
-            
-            // texture settings
-            texture.setSmooth(true);
-
-            // apply texture to sprite
-            sprite.setTexture(texture);
-        }
-
     public:
-        Bishop(sf::RenderWindow* win){
-            piece_color = PieceColor::BLACK;
-            load_texture();
-            win->draw(sprite);
+        //Bishop(sf::RenderWindow* win, PieceColor piece_color){
+        Bishop(uint8_t pos_y, uint8_t pos_x, PieceColor piece_color) 
+            : Piece(pos_y, pos_x, piece_color){
+                load_texture(W_TEXTURE, B_TEXTURE);
         }
 
         void move() override{
@@ -38,10 +24,15 @@ class Bishop : public Piece{
             return WEIGHT;
         }
 
+        sf::Sprite* get_sprite() override{
+            return sprite;
+        }
 
+        std::string get_name() override{
+            return "bishop";
+        }
 
-    
-} ;
+};
 
 
 
