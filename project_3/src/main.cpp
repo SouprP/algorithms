@@ -1,61 +1,124 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include <core/pieces/bishop.hpp>
 #include <core/tile.hpp>
-#include <core/logic.hpp>
-#include <core/board.hpp>
+#include <core/logic.h>
+#include <core/board.h>
 
 #include <layout/button.hpp>
+#include <layout/textbox.hpp>
+#include <layout/label.hpp>
 
-#define WIDTH 960+25
-#define HEIGHT 480+50
+//#define WIDTH 960+25
+//#define HEIGHT 480+50
+#define WIDTH 300
+#define HEIGHT 400
 
 sf::Font pixel_font;
 
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "SFML Chess", sf::Style::Close);
-    pixel_font.loadFromFile("../fonts/pixel.ttf");
+int* menu(){
+    // Creation of window and it's settings
+    sf::RenderWindow menu_window;
 
+    // Matrix setup
+    Label matrix_label(100, 25, "Board size", pixel_font, 20);
+    TextBox matrix_input(50, 65, 200, 50, pixel_font, 24);
+    matrix_input.setText("3");
 
-    window.setFramerateLimit(15);
+    // Win condition setup
+    Label cond_label(100, 150, "Win condition", pixel_font, 20);
+    TextBox cond_input(50, 190, 200, 50, pixel_font, 24);
+    cond_input.setText("3");
 
-    Button myButton(sf::Vector2f(120, 50), sf::Vector2f(240, 100), "random gen", pixel_font);
-    myButton.setCallback([]() {
-        std::cout << "Button Clicked!\n";
+    // Start game button
+    Button start_button(sf::Vector2f(100, 260), sf::Vector2f(100, 50), "Start", pixel_font);
+    start_button.setCallback([](sf::RenderWindow& win) {
+        //win.clear();
+        win.close();
     });
 
-    Board* board = new Board(&window);
-    board->setup_pieces(true);
+    menu_window.create(sf::VideoMode(WIDTH, HEIGHT), "MENU", sf::Style::Close);
 
-    while (window.isOpen())
+    while (menu_window.isOpen())
     {
         sf::Event event;
-        while (window.pollEvent(event))
+        while (menu_window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
-                window.close();
+                menu_window.close();
 
-            myButton.handleEvent(event);
+            //myButton.handleEvent(event);
+            matrix_input.handleEvent(event);
+            cond_input.handleEvent(event);
+            start_button.handleEvent(event, menu_window);
         }
 
-        window.clear(sf::Color::Black);
-        // for(int y = 0; y < 8; y++)
-        //     for(int x; x < 8; x++)
-        //         new Tile(&window, x, y, sf::Color::Green);
+        menu_window.clear(sf::Color::Black);
+        matrix_input.draw(menu_window);
+        matrix_label.draw(menu_window);
 
-        //Piece* piece = new Bishop(&window);
-        //window.draw(shape);
-        board->setup();
-        board->draw();
-        myButton.draw(window);
-        window.display();
+        cond_input.draw(menu_window);
+        cond_label.draw(menu_window);
+
+        start_button.draw(menu_window);
+        //board->setup();
+        //myButton.draw(window);
+        menu_window.display();
     }
 
-    // Piece* piece = new Bishop();
-    // piece->move();
-    // std::cout << piece->get_weight();
+    int* info = new int[2];
+    info[0] = std::stoi(matrix_input.getText());
+    info[1] = std::stoi(cond_input.getText());
+    return info;
+    //std::cout << matrix_input.getText() << std::endl;
+}
+
+void game(int* game_info){
+    sf::RenderWindow game_window;
+    game_window.setFramerateLimit(5);
+
+    uint8_t size = game_info[0];
+    uint8_t win_cond = game_info[1];
+    //std::cout << game_info[0] << std::endl;
+    //std::cout << game_info[1] << std::endl;
+
+    Board* board = new Board(&game_window, size, win_cond);
+    GameManager* manager = new GameManager(board);
+
+    //game_window.create(sf::VideoMode(WIDTH*2, HEIGHT), "amogus", sf::Style::Close);
+    game_window.create(sf::VideoMode(board->get_size() * TILE_SIZE
+        , board->get_size() * TILE_SIZE), "TIC TAC TOE", sf::Style::Close);
+
+    while (game_window.isOpen())
+    {
+        sf::Event event;
+        while (game_window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                game_window.close();
+
+            if(event.type == sf::Event::MouseButtonPressed)
+                if(event.mouseButton.button == sf::Mouse::Left)
+                    manager->handle_click(event.mouseButton.x, event.mouseButton.y);
+        }
+        game_window.clear(sf::Color::Black);
+        board->setup();
+        //myButton.draw(window);
+        board->draw();
+        game_window.display();
+    }
+}
+
+int main()
+{
+    // Creation of window and it's settings
+    sf::RenderWindow menu_window;
+    sf::RenderWindow window;
+    //menu_window.setFramerateLimit(15);
+    pixel_font.loadFromFile("../fonts/pixel.ttf");
+
+    int* game_info = menu();
+    game(game_info);
 
     return 0;
 }

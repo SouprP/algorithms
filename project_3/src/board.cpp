@@ -1,64 +1,119 @@
-#include <core/board.hpp>
+#include <core/board.h>
 
 
-Board::Board(sf::RenderWindow* win){
+Board::Board(sf::RenderWindow* win, uint8_t size, uint8_t win_cond){
     this->win = win;
+    this->size = size;
+    this->win_cond = win_cond;
+
+    // setup the board as a set of nullptr
+    this->board = new Piece**[size];
+    for(uint8_t y = 0; y < size; y++){
+        board[y] = new Piece*[size];
+        for(uint8_t x = 0; x < size; x++)
+            board[y][x] = nullptr;
+    }
 }
 
 void Board::setup(){
-    b_texture.loadFromFile(BOARD_FILE);
-    b_sprite.setTexture(b_texture);
-    b_sprite.setPosition(X_OFFSET, Y_OFFSET);
+    // Load textures
+    t1_texture.loadFromFile(TILE_1);
+    t2_texture.loadFromFile(TILE_2);
+
+    // Apply textures
+    t1_sprite.setTexture(t1_texture);
+    t2_sprite.setTexture(t2_texture);
+
+
+    for(uint8_t y = 0; y < size; y++)
+        for(uint8_t x = 0; x < size; x++){
+            sf::Sprite* sprite = new sf::Sprite();
+
+            if((x+y) % 2 == 0)
+                sprite->setTexture(t1_texture);
+            else
+                sprite->setTexture(t2_texture);
+
+            sprite->setPosition(x * TILE_SIZE, y * TILE_SIZE);
+            win->draw(*sprite);
+        }
+    //b_texture.loadFromFile(BOARD_FILE);
+    //b_sprite.setTexture(b_texture);
+    //b_sprite.setPosition(X_OFFSET, Y_OFFSET);
+    
     //board_s.setRotation(90);
     //board_s.setPosition(sf::Vector2f(board_s.getPosition().x + 480, 
     //    board_s.getPosition().y + 0));
-    win->draw(b_sprite);
+    
+    //win->draw(b_sprite);
 }
 
-void Board::setup_pieces() {
-    setup_pieces(false);
+void Board::set_size(uint8_t size){
+    this->size = size;
 }
 
-void Board::setup_pieces(bool isBlack){
-    // for(uint8_t y = 0; y < 8; y++)
-    //     for(uint8_t x = 0; x < 8; x++)
-    //         board[y][x] = nullptr;
+uint8_t Board::get_size(){
+    return size;
+}
 
-    if(isBlack){
-        Piece* b_bishop_1 = new Bishop(7, 6 ,PieceColor::BLACK);
-        Piece* w_bishop_1 = new Bishop(6, 6, PieceColor::WHITE);
-        board[7][2] = b_bishop_1; 
-        board[0][6] = w_bishop_1;
+bool Board::is_winner(PieceType type){
+    // check each vertical row if is winner
+    for(uint8_t y = 0; y < size; y++){
+        uint8_t count = 0;
+        for(uint8_t x = 0; x < size; x++){
+            if(count == win_cond)
+                return true;
 
-        apply_pieces();
-        return;
+            if(board[y][x] != nullptr){
+                if(board[y][x]->get_type() == type)
+                    count++;
+                else
+                    count = 0;
+            }
+            else
+                count = 0;
+        }
+
+        if(count == win_cond)
+            return true;
     }
 
-    Piece* b_bishop_1 = new Bishop(7, 6 ,PieceColor::BLACK);
-        Piece* w_bishop_1 = new Bishop(6, 6, PieceColor::WHITE);
-        board[5][6] = b_bishop_1; 
-        board[2][6] = w_bishop_1;
+    // check each horizontal row
+    
+    return false;
+}
 
-        apply_pieces();
-    //Piece* b_pawn_1
+bool Board::is_full(){
+    for (uint8_t y = 0; y < size; ++y)
+        for (uint8_t x = 0; x < size; ++x)
+            if (board[y][x] == nullptr)
+                return false;
+    return true;
+}
 
+void Board::add_piece(Piece* piece){
+    std::cout << "piece added!" << std::endl;
+    std::cout <<"X: " << piece->get_x()
+    << ",  Y: " << piece->get_y() << std::endl;
+    board[piece->get_y()][piece->get_x()] = piece;
+    pieces.push_back(piece);
+}
+
+Piece* Board::get_piece(uint8_t x, uint8_t y){
+    return board[y][x];
 }
 
 void Board::draw(){
-    for(uint8_t y = 0; y < 8; y++)
-        for(uint8_t x = 0; x < 8; x++)
+    for(uint8_t y = 0; y < size; y++)
+        for(uint8_t x = 0; x < size; x++)
             if(board[y][x] != nullptr){
                 Piece* p = board[y][x];
-                
-                p->get_sprite()->setPosition(X_OFFSET + x * TILE_SIZE
-                    , Y_OFFSET + y*TILE_SIZE);
+                //std::cout << p->get_weight() << std::endl;
+                p->get_sprite()->setPosition(x * TILE_SIZE
+                    , y*TILE_SIZE);
                 
                 win->draw(*p->get_sprite());
                 
             }
 }
 
-void Board::apply_pieces(){
-    for(Piece* p : pieces)
-        board[p->get_y()][p->get_x()] = p;
-}

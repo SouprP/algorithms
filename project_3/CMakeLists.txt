@@ -3,6 +3,7 @@ project(game_project)
 
 add_library(game_lib 
         src/board.cpp
+        src/logic.cpp
         )
 target_include_directories(game_lib PUBLIC include/)
 

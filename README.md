@@ -19,7 +19,7 @@ A collection of projects to research diffrent algorithms.
 
 ## Project 3
 
-- #### TBA
+- #### Min-max / Alpha-beta pruning algorithm
 
 ### Compiling
 ```
