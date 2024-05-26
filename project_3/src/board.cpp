@@ -79,7 +79,73 @@ bool Board::is_winner(PieceType type){
     }
 
     // check each horizontal row
-    
+    for(uint8_t x = 0; x < size; x++){
+        uint8_t count = 0;
+        for(uint8_t y = 0; y < size; y++){
+            if(count == win_cond)
+                return true;
+
+            if(board[y][x] != nullptr){
+                if(board[y][x]->get_type() == type)
+                    count++;
+                else
+                    count = 0;
+            }
+            else
+                count = 0;
+        }
+
+        if(count == win_cond)
+            return true;
+    }
+
+    //diagonal check from the left
+    for(uint8_t y = 0; y < size - win_cond + 1; y++)
+        for(uint8_t x = 0; x < size; x++){
+            uint8_t diag_y = y;
+            uint8_t count = 0;
+            for(uint8_t diag_x = x; diag_x < size
+                && y < size - 1 ; diag_x++){
+                if(count == win_cond)
+                    return true;
+
+                if(board[diag_y][diag_x] != nullptr){
+                    if(board[diag_y++][diag_x]->get_type() == type)
+                        count++;
+                    else
+                        count = 0;
+                }
+                else
+                    count = 0;
+            }
+
+            if(count == win_cond)
+                return true;
+        }
+
+    // diagonal check from the right
+    for (uint8_t y = 0; y < size - win_cond + 1; y++) {
+        for (uint8_t x = 0; x < size; x++) {
+            uint8_t diag_y = y;
+            uint8_t count = 0;
+            for (int8_t diag_x = x; diag_x >= 0 && diag_y < size; diag_x--) {
+                if (count == win_cond)
+                    return true;
+
+                if (board[diag_y][diag_x] != nullptr) {
+                    if (board[diag_y++][diag_x]->get_type() == type)
+                        count++;
+                    else
+                        count = 0;
+                } else
+                    count = 0;
+            }
+
+            if (count == win_cond)
+                return true;
+        }
+    }
+
     return false;
 }
 
@@ -92,9 +158,9 @@ bool Board::is_full(){
 }
 
 void Board::add_piece(Piece* piece){
-    std::cout << "piece added!" << std::endl;
-    std::cout <<"X: " << piece->get_x()
-    << ",  Y: " << piece->get_y() << std::endl;
+    //std::cout << "piece added!" << std::endl;
+    // std::cout <<"X: " << piece->get_x()
+    // << ",  Y: " << piece->get_y() << std::endl;
     board[piece->get_y()][piece->get_x()] = piece;
     pieces.push_back(piece);
 }

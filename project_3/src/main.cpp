@@ -23,7 +23,7 @@ int* menu(){
     // Matrix setup
     Label matrix_label(100, 25, "Board size", pixel_font, 20);
     TextBox matrix_input(50, 65, 200, 50, pixel_font, 24);
-    matrix_input.setText("3");
+    matrix_input.setText("5");
 
     // Win condition setup
     Label cond_label(100, 150, "Win condition", pixel_font, 20);
@@ -73,7 +73,7 @@ int* menu(){
     //std::cout << matrix_input.getText() << std::endl;
 }
 
-void game(int* game_info){
+GameState game(int* game_info){
     sf::RenderWindow game_window;
     game_window.setFramerateLimit(5);
 
@@ -99,26 +99,76 @@ void game(int* game_info){
 
             if(event.type == sf::Event::MouseButtonPressed)
                 if(event.mouseButton.button == sf::Mouse::Left)
-                    manager->handle_click(event.mouseButton.x, event.mouseButton.y);
+                    manager->handle_click(game_window, event.mouseButton.x, event.mouseButton.y);
         }
         game_window.clear(sf::Color::Black);
+        
         board->setup();
-        //myButton.draw(window);
         board->draw();
+
         game_window.display();
     }
+
+    return manager->get_state();
 }
+
+void end(GameState result){
+    // Creation of window and it's settings
+    sf::RenderWindow end_window;
+
+    // Matrix setup
+    Label result_label(100, 25, "TEXT", pixel_font, 32);
+    if(result == GameState::PLAYER_WON){
+        result_label.set_text("PLAYER WON");
+        result_label.set_pos(50, 25);
+    }else if(result == GameState::AI_WON){
+        result_label.set_text("AI WON");
+    }else{
+        result_label.set_text("DRAW");
+    }
+
+    // Start game button
+    Button start_button(sf::Vector2f(100, 260), sf::Vector2f(100, 50), "Close", pixel_font);
+    start_button.setCallback([](sf::RenderWindow& win) {
+        //win.clear();
+        win.close();
+    });
+
+    end_window.create(sf::VideoMode(WIDTH, HEIGHT), "RESULT", sf::Style::Close);
+
+    while (end_window.isOpen())
+    {
+        sf::Event event;
+        while (end_window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                end_window.close();
+
+            start_button.handleEvent(event, end_window);
+        }
+
+        end_window.clear(sf::Color::Black);
+        result_label.draw(end_window);
+
+        start_button.draw(end_window);
+        //board->setup();
+        //myButton.draw(window);
+        end_window.display();
+    }
+
+}
+
 
 int main()
 {
-    // Creation of window and it's settings
-    sf::RenderWindow menu_window;
-    sf::RenderWindow window;
-    //menu_window.setFramerateLimit(15);
+    // Font setup
     pixel_font.loadFromFile("../fonts/pixel.ttf");
 
+    // Main menu and game loop
     int* game_info = menu();
-    game(game_info);
+    GameState result = game(game_info);
+    end(result);
 
+    //end(true);
     return 0;
 }

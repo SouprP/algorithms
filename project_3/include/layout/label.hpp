@@ -29,6 +29,14 @@ class Label{
             window.draw(text);
         }
 
+        void set_text(std::string text){
+            this->text.setString(text);
+        }
+
+        void set_pos(int x, int y){
+            this->text.setPosition(x, y);
+        }
+
 };
 
 #endif
