@@ -52,6 +52,7 @@ class Board{
         void set_size(uint8_t size);
         uint8_t get_size();
         void add_piece(Piece* piece);
+        void remove_piece(int y, int x);
         Piece* get_piece(uint8_t x, uint8_t y);
 
         bool is_winner(PieceType type);

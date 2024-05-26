@@ -165,6 +165,10 @@ void Board::add_piece(Piece* piece){
     pieces.push_back(piece);
 }
 
+void Board::remove_piece(int y, int x){
+    board[y][x] = nullptr;
+}
+
 Piece* Board::get_piece(uint8_t x, uint8_t y){
     return board[y][x];
 }

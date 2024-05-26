@@ -26,7 +26,11 @@ class GameManager{
         bool is_winner(PieceType type);
         bool is_full();
         GameState get_state();
-        void ai();
+        void ai(sf::RenderWindow& win);
+
+        // min-max algorithm
+        int minimax(Board* board, uint8_t depth, bool isMaximizingPlayer, PieceType aiType, PieceType playerType);
+        std::pair<uint8_t, uint8_t> find_best_move(Board* board, PieceType aiType, PieceType playerType);
 };
 
 #endif
