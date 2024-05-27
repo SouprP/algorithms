@@ -1,3 +1,6 @@
+#ifndef X_PIECE_HPP_
+#define X_PIECE_HPP_
+
 #include <core/interface/piece.h>
 
 class X_Piece : public Piece{
@@ -16,3 +19,5 @@ class X_Piece : public Piece{
         }
         
 };
+
+#endif

@@ -45,18 +45,22 @@ class Board{
     
     public:
         Board(sf::RenderWindow* win, uint8_t size, uint8_t win_cond);
+        ~Board();
 
         // basic starting setup
         void setup();
 
         void set_size(uint8_t size);
         uint8_t get_size();
+
+
         void add_piece(Piece* piece);
         void remove_piece(int y, int x);
         Piece* get_piece(uint8_t x, uint8_t y);
 
         bool is_winner(PieceType type);
         bool is_full();
+        uint8_t get_win_cond();
 
         void draw();
 };

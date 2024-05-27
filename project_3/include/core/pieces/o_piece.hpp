@@ -1,3 +1,6 @@
+#ifndef O_PIECE_HPP_
+#define O_PIECE_HPP_
+
 #include <core/interface/piece.h>
 
 class O_Piece : public Piece{
@@ -16,3 +19,5 @@ class O_Piece : public Piece{
         }
         
 };
+
+#endif

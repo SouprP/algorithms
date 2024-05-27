@@ -1,6 +1,7 @@
 #include <core/logic.h>
 
 GameManager::GameManager(Board* board){
+    this->state = GameState::ONGOING;
     this->board = board;
     this->player_turn = true;
 }
@@ -23,6 +24,9 @@ void GameManager::handle_click(sf::RenderWindow& win, int x, int y){
         board->add_piece(p);
         player_turn = false;
     }
+
+    board->draw();
+    win.display();
     // else{
     //     Piece* p = new O_Piece(grid_y, grid_x);
     //     board->add_piece(p);
@@ -33,111 +37,76 @@ void GameManager::handle_click(sf::RenderWindow& win, int x, int y){
         std::cout << "WON X" << std::endl;
         state = GameState::PLAYER_WON;
         win.close();
-        
+        return;
     }
-    // else if(board->is_winner(PieceType::O)){
-    //     std::cout << "WON O" << std::endl;
-    //     state = GameState::AI_WON;
-    //     win.close();
-    // }
 
     if(board->is_full()){
         std::cout << "DRAW" << std::endl;
         state = GameState::DRAW;
         win.close();
+        return;
     }
 
-    // std::cout << "clicked n! X: " << x 
-    //     << ",  Y: " << y << std::endl;
-    // std::cout << "clicked! X: " << grid_x 
-    //     << ",  Y: " << grid_y << std::endl;
-    ai(win);
-}
+    try{
+        ai(win);
+    }catch(std::exception ignored){
 
-// returns true if player won (X_PIECE)
-// bool GameManager::get_winner(){
-//     return player_turn;
-// }
+    }
+}
 
 GameState GameManager::get_state(){
     return this->state;
 }
 
-// min-max algorithm
-int GameManager::minimax(Board* board, uint8_t depth, bool isMaximizingPlayer, PieceType aiType, PieceType playerType){
-    if (board->is_winner(aiType)) {
-        return 10 - depth;
-    }
-    if (board->is_winner(playerType)) {
-        return depth - 10;
-    }
-    if (board->is_full()) {
-        return 0;
-    }
-
-    if (isMaximizingPlayer) {
-        int bestScore = -1000;
-        for (uint8_t y = 0; y < board->get_size(); ++y) {
-            for (uint8_t x = 0; x < board->get_size(); ++x) {
-                if (board->get_piece(y, x) == nullptr) {
-                    board->add_piece(new X_Piece(y, x)); // AI's move
-                    int score = minimax(board, depth + 1, false, aiType, playerType);
-                    board->remove_piece(y, x); // Undo move
-                    bestScore = std::max(score, bestScore);
-                }
-            }
-        }
-        return bestScore;
-    } else {
-        int bestScore = 1000;
-        for (uint8_t y = 0; y < board->get_size(); ++y) {
-            for (uint8_t x = 0; x < board->get_size(); ++x) {
-                if (board->get_piece(y, x) == nullptr) {
-                    board->add_piece(new O_Piece(y, x)); // Player's move
-                    int score = minimax(board, depth + 1, true, aiType, playerType);
-                    board->remove_piece(y, x); // Undo move
-                    bestScore = std::min(score, bestScore);
-                }
-            }
-        }
-        return bestScore;
-    }
+// true if player turn
+bool GameManager::get_turn(){
+    return this->player_turn;
 }
 
-std::pair<uint8_t, uint8_t> GameManager::find_best_move(Board* board, PieceType aiType, PieceType playerType){
-    int bestScore = -1000;
-    std::pair<uint8_t, uint8_t> bestMove;
+void GameManager::ai(sf::RenderWindow& win) {
+    // auto [best_y, best_x] = find_best_move(board, PieceType::O, PieceType::X, board->get_win_cond());
+    // board->add_piece(new O_Piece(best_y, best_x));
+    //Board* board_copy = board;
+    //std::memcpy(board_copy, board, sizeof(board));
 
-    for (uint8_t y = 0; y < board->get_size(); ++y) {
-        for (uint8_t x = 0; x < board->get_size(); ++x) {
-            if (board->get_piece(y, x) == nullptr) {
-                board->add_piece(new X_Piece(y, x)); // AI's move
-                int score = minimax(board, 0, false, aiType, playerType);
-                board->remove_piece(y, x); // Undo move
+    int best_val = MIN_INF;
+    int best_y = 0;
+    int best_x = 0;
 
-                if (score > bestScore) {
-                    bestScore = score;
-                    bestMove = std::make_pair(y, x);
-                }
-            }
+    int alfa = MIN_INF;
+    int beta = MAX_INF;
+
+    for(auto move : get_moves(board)){
+        int y = move.first;
+        int x = move.second;
+
+        board->add_piece(new O_Piece(y, x));
+        int move_val = min_max(board, 0, alfa, beta, false);
+        board->remove_piece(y, x);
+
+        if(move_val > best_val){
+            best_y = y;
+            best_x = x;
+            best_val = move_val;
         }
     }
 
-    return bestMove;
-}
+    if(best_y != -1 && best_x != -1){
+        std::cout << "piece added!" << std::endl;
+        board->add_piece(new O_Piece(best_y, best_x));
+        player_turn = true;
+    }
+    // std::cout << "lol?" << std::endl;
+    // for(auto obj : get_moves(board_copy)){
+    //     std::cout << "Y: " << obj.first
+    //         << ",  X: " << obj.second << std::endl;
+    // }
 
-void GameManager::ai(sf::RenderWindow& win){
-    auto [best_y, best_x] = find_best_move(board, PieceType::X, PieceType::O);
-    board->add_piece(new X_Piece(best_y, best_x));
-    player_turn = true;
-
-    if(board->is_winner(PieceType::O)){
+    if (board->is_winner(PieceType::O)) {
         std::cout << "WON O" << std::endl;
         state = GameState::AI_WON;
         win.close();
-    }
-
-    if(board->is_full()){
+    } else if (board->is_full()) {
         std::cout << "DRAW" << std::endl;
         state = GameState::DRAW;
         win.close();

@@ -19,6 +19,8 @@ sf::Font pixel_font;
 int* menu(){
     // Creation of window and it's settings
     sf::RenderWindow menu_window;
+    int* info = new int[3];
+    info[2] = 0;
 
     // Matrix setup
     Label matrix_label(100, 25, "Board size", pixel_font, 20);
@@ -44,9 +46,10 @@ int* menu(){
         sf::Event event;
         while (menu_window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed){
                 menu_window.close();
-
+                info[2] = 1; // closed manually bit
+            }
             //myButton.handleEvent(event);
             matrix_input.handleEvent(event);
             cond_input.handleEvent(event);
@@ -66,16 +69,19 @@ int* menu(){
         menu_window.display();
     }
 
-    int* info = new int[2];
-    info[0] = std::stoi(matrix_input.getText());
-    info[1] = std::stoi(cond_input.getText());
+    //int* info = new int[2];
+    info[0] = std::stoi(matrix_input.getText()); // board size
+    info[1] = std::stoi(cond_input.getText()); // win condition size
     return info;
     //std::cout << matrix_input.getText() << std::endl;
 }
 
 GameState game(int* game_info){
+    if(game_info[2] == 1)
+        return GameState::ONGOING;
+
     sf::RenderWindow game_window;
-    game_window.setFramerateLimit(5);
+    game_window.setFramerateLimit(1);
 
     uint8_t size = game_info[0];
     uint8_t win_cond = game_info[1];
@@ -107,12 +113,21 @@ GameState game(int* game_info){
         board->draw();
 
         game_window.display();
+        // if(!manager->get_turn() && manager->get_state() == GameState::ONGOING)
+        //     try{
+        //         manager->ai(game_window);
+        //     }catch(std::exception ignored){
+
+        //     }
     }
 
     return manager->get_state();
 }
 
 void end(GameState result){
+    if(result == GameState::ONGOING)
+        return;
+
     // Creation of window and it's settings
     sf::RenderWindow end_window;
 

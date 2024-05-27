@@ -2,12 +2,16 @@
 #define LOGIC_H_
 
 #include <core/board.h>
+#include <core/algorithm.h>
 #include <iostream>
 
 #include <core/pieces/x_piece.hpp>
 #include <core/pieces/o_piece.hpp>
 
+//#define MAX_DEPTH 5
+
 enum GameState{
+    ONGOING,
     PLAYER_WON,
     AI_WON,
     DRAW
@@ -25,12 +29,11 @@ class GameManager{
         void handle_click(sf::RenderWindow& win, int x, int y);
         bool is_winner(PieceType type);
         bool is_full();
+        bool get_turn();
         GameState get_state();
         void ai(sf::RenderWindow& win);
 
         // min-max algorithm
-        int minimax(Board* board, uint8_t depth, bool isMaximizingPlayer, PieceType aiType, PieceType playerType);
-        std::pair<uint8_t, uint8_t> find_best_move(Board* board, PieceType aiType, PieceType playerType);
 };
 
 #endif

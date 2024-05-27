@@ -15,27 +15,37 @@ Board::Board(sf::RenderWindow* win, uint8_t size, uint8_t win_cond){
     }
 }
 
+Board::~Board() {
+    for (uint8_t y = 0; y < size; y++) {
+        for (uint8_t x = 0; x < size; x++) {
+            delete board[y][x]; // Delete each Piece
+        }
+        delete[] board[y]; // Delete each row
+    }
+    delete[] board; // Delete the board array
+}
+
 void Board::setup(){
     // Load textures
     t1_texture.loadFromFile(TILE_1);
     t2_texture.loadFromFile(TILE_2);
 
     // Apply textures
-    t1_sprite.setTexture(t1_texture);
-    t2_sprite.setTexture(t2_texture);
+    //t1_sprite.setTexture(t1_texture);
+    //t2_sprite.setTexture(t2_texture);
 
 
     for(uint8_t y = 0; y < size; y++)
         for(uint8_t x = 0; x < size; x++){
-            sf::Sprite* sprite = new sf::Sprite();
+            sf::Sprite sprite = sf::Sprite();
 
             if((x+y) % 2 == 0)
-                sprite->setTexture(t1_texture);
+                sprite.setTexture(t1_texture);
             else
-                sprite->setTexture(t2_texture);
+                sprite.setTexture(t2_texture);
 
-            sprite->setPosition(x * TILE_SIZE, y * TILE_SIZE);
-            win->draw(*sprite);
+            sprite.setPosition(x * TILE_SIZE, y * TILE_SIZE);
+            win->draw(sprite);
         }
     //b_texture.loadFromFile(BOARD_FILE);
     //b_sprite.setTexture(b_texture);
@@ -157,19 +167,36 @@ bool Board::is_full(){
     return true;
 }
 
+uint8_t Board::get_win_cond(){
+    return win_cond;
+}
+
 void Board::add_piece(Piece* piece){
-    //std::cout << "piece added!" << std::endl;
-    // std::cout <<"X: " << piece->get_x()
-    // << ",  Y: " << piece->get_y() << std::endl;
-    board[piece->get_y()][piece->get_x()] = piece;
-    pieces.push_back(piece);
+    uint8_t x = piece->get_x();
+    uint8_t y = piece->get_y();
+    //board[piece->get_y()][piece->get_x()] = piece;
+    //pieces.push_back(piece);
+    if(x >= size || y>= size || board[y][x] != nullptr){
+        delete piece;
+        return;
+    }
+
+    board[y][x] = piece;
+    //pieces.push_back(piece);
 }
 
 void Board::remove_piece(int y, int x){
+    if(x >= size || y>= size || board[y][x] == nullptr)    
+        return;
+
+    delete board[y][x];
     board[y][x] = nullptr;
 }
 
 Piece* Board::get_piece(uint8_t x, uint8_t y){
+    if(x >= size || y >= size)
+        return nullptr;
+
     return board[y][x];
 }
 

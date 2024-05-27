@@ -4,6 +4,7 @@ project(game_project)
 add_library(game_lib 
         src/board.cpp
         src/logic.cpp
+        src/algorithm.cpp
         )
 target_include_directories(game_lib PUBLIC include/)
 
