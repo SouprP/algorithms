@@ -1,91 +1,76 @@
 #include <core/algorithm.h>
 
-int min_max_util(Board* board, int depth, int alpha, int beta, bool isMaxizing){
+Algorithm::Algorithm(){
+    this->iters = 0;
+}
+
+int Algorithm::min_max_util(Board* board, int depth, bool isMaxizing){
+    // min max implementation here
     int score = evaluate(board);
-    std::cout << "depth: " << depth << std::endl;
 
-    if(score == 10 || score == -10 || depth == MAX_DEPTH){
+    if(score == 10 || score == -10 || depth == 0 || board->is_full())
         return score;
-    }
 
-    if(board->is_full())
-        return 0;
+    iters++;
 
-    //iters++;
-    Piece* piece = nullptr;
     if(isMaxizing){
-        //int best_val = -1000;
-        int best_val = MIN_INF;
+        int best = MIN_INF;
+
+        // loop through all moves
         for(auto move : get_moves(board)){
             int y = move.first;
             int x = move.second;
 
-            try{
-            std::cout << "Trying move O at (" << y << ", " << x << ")" << std::endl;
-            piece = new O_Piece(y, x);
-            board->add_piece(piece);
-            best_val = std::max(best_val, min_max_util(board, depth + 1, alpha, beta, false));
+            // make the move
+            board->add_piece(new O_Piece(y, x));
 
+            // recurse call min_max and choose max value
+            best = std::max(best, min_max_util(board, depth - 1, false));
+
+            // undo the move
             board->remove_piece(y, x);
-            //delete piece;
-            alpha = std::max(alpha, best_val);
-
-            if(beta <= alpha)
-                break;
-            }catch(std::exception){
-                std::cout << "error when y: " << y << ", x: " << x << std::endl;
-            }
         }
+        return best;
+    }else{
+        int best = MAX_INF;
 
-        return best_val;
-    }
+        // loop through all moves
+        for(auto move : get_moves(board)){
+            int y = move.first;
+            int x = move.second;
 
-    //int best_val = 1000;
-    int best_val = MAX_INF;
-    for(auto move : get_moves(board)){
-        int y = move.first;
-        int x = move.second;
+            // make the move
+            board->add_piece(new O_Piece(y, x));
 
-        try{
-        std::cout << "Trying move X at (" << y << ", " << x << ")" << std::endl;
-        piece = new X_Piece(y, x);
-        board->add_piece(piece);
-        best_val = std::min(best_val, min_max(board, depth + 1, alpha, beta, true));
+            // recurse call min_max and choose min value
+            best = std::min(best, min_max_util(board, depth - 1, true));
 
-        board->remove_piece(y, x);
-        //delete piece;
-        alpha = std::min(alpha, best_val);
-
-        if(beta <= alpha)
-            break;
-
-        }catch(std::exception){
-                std::cout << "error when y: " << y << ", x: " << x << std::endl;
+            // undo the move
+            board->remove_piece(y, x);
         }
+        return best;
     }
-
-    return best_val;
 }
 
-int min_max(Board* board, int depth, int alpha, int beta, bool isMaxizing){
+int Algorithm::min_max(Board* board, int depth, bool isMaxizing){
     //iters = 0;
-    int result = min_max_util(board, depth, alpha, beta, isMaxizing);
+    int result = min_max_util(board, depth, isMaxizing);
 
     //std::cout << "Iterations: " << iters << std::endl;
     return result;
 }
 
-std::vector<std::pair<int, int>> get_moves(Board* board){
+std::vector<std::pair<int, int>> Algorithm::get_moves(Board* board){
     std::vector<std::pair<int, int>> moves;
-    for(int y = 0; y < board->get_size() - 1; y++)
-        for(int x = 0; x < board->get_size() - 1; x++)
+    for(int y = 0; y < board->get_size(); y++)
+        for(int x = 0; x < board->get_size(); x++)
             if(board->get_piece(x, y) == nullptr)
                 moves.push_back({y, x});
 
     return moves;
 }
 
-int evaluate(Board* board){
+int Algorithm::evaluate(Board* board){
     // AI winning
     if(board->is_winner(PieceType::O))
         return 10;
@@ -95,4 +80,12 @@ int evaluate(Board* board){
         return -10;
 
     return 0;
+}
+
+int Algorithm::get_iters(){
+    return iters;
+}
+
+void Algorithm::reset_iters(){
+    this->iters = 0;
 }

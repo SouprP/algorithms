@@ -64,44 +64,41 @@ bool GameManager::get_turn(){
 }
 
 void GameManager::ai(sf::RenderWindow& win) {
-    // auto [best_y, best_x] = find_best_move(board, PieceType::O, PieceType::X, board->get_win_cond());
-    // board->add_piece(new O_Piece(best_y, best_x));
-    //Board* board_copy = board;
-    //std::memcpy(board_copy, board, sizeof(board));
+    Algorithm alg = Algorithm();
 
+    // find the best move for O_Piece
     int best_val = MIN_INF;
-    int best_y = 0;
-    int best_x = 0;
+    std::pair<int, int> best_move = {-1, -1};
 
-    int alfa = MIN_INF;
-    int beta = MAX_INF;
-
-    for(auto move : get_moves(board)){
+    for (auto move : alg.get_moves(board)) {
         int y = move.first;
         int x = move.second;
 
+        // Make the move
         board->add_piece(new O_Piece(y, x));
-        int move_val = min_max(board, 0, alfa, beta, false);
+
+        // Compute evaluation function for this move
+        int moveVal = alg.min_max(board, MAX_DEPTH, false);
+
+        // Undo the move
         board->remove_piece(y, x);
 
-        if(move_val > best_val){
-            best_y = y;
-            best_x = x;
-            best_val = move_val;
+        // If the value of the current move is more than the best value, update best
+        if (moveVal > best_val) {
+            best_move = { y, x };
+            best_val = moveVal;
         }
     }
 
-    if(best_y != -1 && best_x != -1){
-        std::cout << "piece added!" << std::endl;
-        board->add_piece(new O_Piece(best_y, best_x));
-        player_turn = true;
-    }
-    // std::cout << "lol?" << std::endl;
-    // for(auto obj : get_moves(board_copy)){
-    //     std::cout << "Y: " << obj.first
-    //         << ",  X: " << obj.second << std::endl;
-    // }
+    // Make the best move
+    board->add_piece(new O_Piece(best_move.first, best_move.second));
+    board->draw();
+    win.display();
 
+    std::cout << "Iterations: " << alg.get_iters() << std::endl;
+    alg.reset_iters();
+
+    // Update game state after AI move
     if (board->is_winner(PieceType::O)) {
         std::cout << "WON O" << std::endl;
         state = GameState::AI_WON;
@@ -111,4 +108,6 @@ void GameManager::ai(sf::RenderWindow& win) {
         state = GameState::DRAW;
         win.close();
     }
+
+    player_turn = true;
 }

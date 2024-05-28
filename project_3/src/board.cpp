@@ -120,9 +120,10 @@ bool Board::is_winner(PieceType type){
                     return true;
 
                 if(board[diag_y][diag_x] != nullptr){
-                    if(board[diag_y++][diag_x]->get_type() == type)
+                    if(board[diag_y][diag_x]->get_type() == type){
+                        diag_y++;
                         count++;
-                    else
+                    }else
                         count = 0;
                 }
                 else
@@ -133,7 +134,7 @@ bool Board::is_winner(PieceType type){
                 return true;
         }
 
-    // diagonal check from the right
+    // // diagonal check from the right
     for (uint8_t y = 0; y < size - win_cond + 1; y++) {
         for (uint8_t x = 0; x < size; x++) {
             uint8_t diag_y = y;
@@ -143,9 +144,10 @@ bool Board::is_winner(PieceType type){
                     return true;
 
                 if (board[diag_y][diag_x] != nullptr) {
-                    if (board[diag_y++][diag_x]->get_type() == type)
+                    if (board[diag_y][diag_x]->get_type() == type){
+                        diag_y++;
                         count++;
-                    else
+                    }else
                         count = 0;
                 } else
                     count = 0;
