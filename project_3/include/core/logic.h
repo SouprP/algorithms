@@ -4,6 +4,7 @@
 #include <core/board.h>
 #include <core/algorithm.h>
 #include <iostream>
+#include <random>
 
 #include <core/pieces/x_piece.hpp>
 #include <core/pieces/o_piece.hpp>
@@ -20,6 +21,7 @@ enum GameState{
 class GameManager{
     Board* board;
 
+    int depth;
     bool player_turn;
     GameState state;
 
@@ -31,7 +33,10 @@ class GameManager{
         bool is_full();
         bool get_turn();
         GameState get_state();
+        void set_depth(int depth);
+
         void ai(sf::RenderWindow& win);
+        void ai_alpha(sf::RenderWindow& win);
 
         // min-max algorithm
 };

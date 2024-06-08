@@ -134,7 +134,7 @@ bool Board::is_winner(PieceType type){
                 return true;
         }
 
-    // // diagonal check from the right
+    // diagonal check from the right
     for (uint8_t y = 0; y < size - win_cond + 1; y++) {
         for (uint8_t x = 0; x < size; x++) {
             uint8_t diag_y = y;

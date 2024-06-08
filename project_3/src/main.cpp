@@ -12,28 +12,33 @@
 //#define WIDTH 960+25
 //#define HEIGHT 480+50
 #define WIDTH 300
-#define HEIGHT 400
+#define HEIGHT 475
 
 sf::Font pixel_font;
 
 int* menu(){
     // Creation of window and it's settings
     sf::RenderWindow menu_window;
-    int* info = new int[3];
+    int* info = new int[4];
     info[2] = 0;
 
     // Matrix setup
     Label matrix_label(100, 25, "Board size", pixel_font, 20);
     TextBox matrix_input(50, 65, 200, 50, pixel_font, 24);
-    matrix_input.setText("5");
+    matrix_input.setText("3");
+
+
+    Label depth_label(115, 150, "AI depth", pixel_font, 20);
+    TextBox depth_input(50, 190, 200, 50, pixel_font, 24);
+    depth_input.setText("2");
 
     // Win condition setup
-    Label cond_label(100, 150, "Win condition", pixel_font, 20);
-    TextBox cond_input(50, 190, 200, 50, pixel_font, 24);
+    Label cond_label(100, 275, "Win condition", pixel_font, 20);
+    TextBox cond_input(50, 315, 200, 50, pixel_font, 24);
     cond_input.setText("3");
 
-    // Start game button
-    Button start_button(sf::Vector2f(100, 260), sf::Vector2f(100, 50), "Start", pixel_font);
+    // Start game button 100 260
+    Button start_button(sf::Vector2f(100, 400), sf::Vector2f(100, 50), "Start", pixel_font);
     start_button.setCallback([](sf::RenderWindow& win) {
         //win.clear();
         win.close();
@@ -48,17 +53,21 @@ int* menu(){
         {
             if (event.type == sf::Event::Closed){
                 menu_window.close();
-                info[2] = 1; // closed manually bit
+                info[3] = 1; // closed manually bit
             }
             //myButton.handleEvent(event);
             matrix_input.handleEvent(event);
             cond_input.handleEvent(event);
             start_button.handleEvent(event, menu_window);
+            depth_input.handleEvent(event);
         }
 
         menu_window.clear(sf::Color::Black);
         matrix_input.draw(menu_window);
         matrix_label.draw(menu_window);
+
+        depth_label.draw(menu_window);
+        depth_input.draw(menu_window);
 
         cond_input.draw(menu_window);
         cond_label.draw(menu_window);
@@ -72,16 +81,18 @@ int* menu(){
     //int* info = new int[2];
     info[0] = std::stoi(matrix_input.getText()); // board size
     info[1] = std::stoi(cond_input.getText()); // win condition size
+    info[2] = std::stoi(depth_input.getText()); // ai depth
     return info;
     //std::cout << matrix_input.getText() << std::endl;
 }
 
 GameState game(int* game_info){
-    if(game_info[2] == 1)
+    if(game_info[3] == 1)
         return GameState::ONGOING;
 
     sf::RenderWindow game_window;
-    game_window.setFramerateLimit(1);
+    //game_window.setFramerateLimit(1);
+    game_window.setVerticalSyncEnabled(true);
 
     uint8_t size = game_info[0];
     uint8_t win_cond = game_info[1];
@@ -90,6 +101,7 @@ GameState game(int* game_info){
 
     Board* board = new Board(&game_window, size, win_cond);
     GameManager* manager = new GameManager(board);
+    manager->set_depth(game_info[2]);
 
     //game_window.create(sf::VideoMode(WIDTH*2, HEIGHT), "amogus", sf::Style::Close);
     game_window.create(sf::VideoMode(board->get_size() * TILE_SIZE

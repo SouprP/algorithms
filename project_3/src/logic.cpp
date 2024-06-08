@@ -24,14 +24,16 @@ void GameManager::handle_click(sf::RenderWindow& win, int x, int y){
         board->add_piece(p);
         player_turn = false;
     }
-
-    board->draw();
-    win.display();
     // else{
     //     Piece* p = new O_Piece(grid_y, grid_x);
     //     board->add_piece(p);
     //     player_turn = true;
     // }
+
+    win.clear();
+    board->setup();
+    board->draw();
+    win.display();
 
     if(board->is_winner(PieceType::X)){
         std::cout << "WON X" << std::endl;
@@ -48,9 +50,10 @@ void GameManager::handle_click(sf::RenderWindow& win, int x, int y){
     }
 
     try{
-        ai(win);
-    }catch(std::exception ignored){
-
+        //ai(win);
+        ai_alpha(win);
+    }catch(std::exception& ignored){
+        std::cout << ignored.what() << std::endl;
     }
 }
 
@@ -63,6 +66,10 @@ bool GameManager::get_turn(){
     return this->player_turn;
 }
 
+void GameManager::set_depth(int depth){
+    this->depth = depth;
+}
+
 void GameManager::ai(sf::RenderWindow& win) {
     Algorithm alg = Algorithm();
 
@@ -70,30 +77,33 @@ void GameManager::ai(sf::RenderWindow& win) {
     int best_val = MIN_INF;
     std::pair<int, int> best_move = {-1, -1};
 
-    for (auto move : alg.get_moves(board)) {
-        int y = move.first;
-        int x = move.second;
+    if(alg.moves_left(board))
+        for (auto move : alg.get_moves(board)) {
+            int y = move.first;
+            int x = move.second;
 
-        // Make the move
-        board->add_piece(new O_Piece(y, x));
+            // Make the move
+            board->add_piece(new O_Piece(y, x));
 
-        // Compute evaluation function for this move
-        int moveVal = alg.min_max(board, MAX_DEPTH, false);
+            // Compute evaluation function for this move
+            int moveVal = alg.min_max(board, MAX_DEPTH, false);
 
-        // Undo the move
-        board->remove_piece(y, x);
+            // Undo the move
+            board->remove_piece(y, x);
 
-        // If the value of the current move is more than the best value, update best
-        if (moveVal > best_val) {
-            best_move = { y, x };
-            best_val = moveVal;
+            // If the value of the current move is more than the best value, update best
+            if (moveVal > best_val) {
+                best_move = { y, x };
+                best_val = moveVal;
+            }
         }
-    }
 
     // Make the best move
-    board->add_piece(new O_Piece(best_move.first, best_move.second));
-    board->draw();
-    win.display();
+    if(best_move.first != -1 && best_move.second != -1){
+        board->add_piece(new O_Piece(best_move.first, best_move.second));
+        board->draw();
+        win.display();
+    }
 
     std::cout << "Iterations: " << alg.get_iters() << std::endl;
     alg.reset_iters();
@@ -103,10 +113,67 @@ void GameManager::ai(sf::RenderWindow& win) {
         std::cout << "WON O" << std::endl;
         state = GameState::AI_WON;
         win.close();
+        return;
     } else if (board->is_full()) {
         std::cout << "DRAW" << std::endl;
         state = GameState::DRAW;
         win.close();
+        return;
+    }
+
+    player_turn = true;
+}
+
+void GameManager::ai_alpha(sf::RenderWindow& win){
+    Algorithm alg;
+
+    int best_val = MIN_INF;
+    std::pair<int, int> best_move = { -1, -1 };
+
+    for (auto move : alg.get_moves(board)) {
+        int y = move.first;
+        int x = move.second;
+
+        board->add_piece(new O_Piece(y, x));
+        int move_val = alg.alpha_beta(board, depth, MIN_INF, MAX_INF, false);
+        board->remove_piece(y, x);
+
+        if (move_val > best_val) {
+            best_move = { y, x };
+            best_val = move_val;
+        }
+    }
+
+    if(best_move.first == -1 && best_move.second == -1){
+        auto moves = alg.get_moves(board);
+        
+        srand(time(NULL));
+        int random = rand() % moves.size();
+
+        best_move = moves[random];
+        //std::cout << "Random y: " << moves[random].first
+        //    << "random x: " << moves[random].second << std::endl; 
+    }
+    board->add_piece(new O_Piece(best_move.first, best_move.second));
+    win.clear();
+    board->setup();
+    board->draw();
+    win.display();
+
+    std::cout << "Best val: " << best_val << std::endl;
+    std::cout << "Iterations: " << alg.get_iters() << std::endl;
+    alg.reset_iters();
+
+    if (board->is_winner(PieceType::O)) {
+        std::cout << "WON O" << std::endl;
+        state = GameState::AI_WON;
+        win.close();
+        return;
+    } else if (board->is_full()) {
+        std::cout << "DRAW" << std::endl;
+        state = GameState::DRAW;
+        win.close();
+        return;
     }
 
     player_turn = true;
