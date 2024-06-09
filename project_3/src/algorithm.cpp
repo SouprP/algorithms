@@ -8,8 +8,8 @@ int Algorithm::min_max(Board* board, int depth, bool isMaximizing){
     // min max implementation here
     int score = evaluate(board);
 
-    if(score == 10 || score == -10 || depth == 0 || board->is_full())
-        return score + depth;
+    if(score == MAX_INF || score == MIN_INF || depth == 0 || board->is_full())
+        return score;
 
     iters++;
     //sf::sleep(sf::microseconds(100));
@@ -154,7 +154,7 @@ int Algorithm::evaluate(Board* board){
                                 count++;
                             }
                         }
-                        if (count == win_cond - 1) score -= 100; // Potential loss
+                        if (count == win_cond - 1) score -= 100; // potential loss
                         if (count == win_cond - 2) score -= 10;
                     }
                     if (y >= win_cond - 1 && x < size - win_cond + 1) {
@@ -166,7 +166,7 @@ int Algorithm::evaluate(Board* board){
                                 count++;
                             }
                         }
-                        if (count == win_cond - 1) score -= 100; // Potential loss
+                        if (count == win_cond - 1) score -= 100; // potential loss
                         if (count == win_cond - 2) score -= 10;
                     }
                     if (x < size - win_cond + 1) {
@@ -198,18 +198,18 @@ int Algorithm::evaluate(Board* board){
         }
     }
 
-    // int center = size / 2;
-    // for (int y = 0; y < size; y++) {
-    //     for (int x = 0; x < size; x++) {
-    //         if (board->get_piece(x, y) != nullptr) {
-    //             if (board->get_piece(x, y)->get_type() == PieceType::O) {
-    //                 score += 5 * (size - std::max(std::abs(center - x), std::abs(center - y)));
-    //             } else if (board->get_piece(x, y)->get_type() == PieceType::X) {
-    //                 score -= 5 * (size - std::max(std::abs(center - x), std::abs(center - y)));
-    //             }
-    //         }
-    //     }
-    // }
+    int center = size / 2;
+    for (int y = 0; y < size; y++) {
+        for (int x = 0; x < size; x++) {
+            if (board->get_piece(x, y) != nullptr) {
+                if (board->get_piece(x, y)->get_type() == PieceType::O) {
+                    score += 5 * (size - std::max(std::abs(center - x), std::abs(center - y)));
+                } else if (board->get_piece(x, y)->get_type() == PieceType::X) {
+                    score -= 5 * (size - std::max(std::abs(center - x), std::abs(center - y)));
+                }
+            }
+        }
+    }
 
     return score;
 }
@@ -225,7 +225,7 @@ void Algorithm::reset_iters(){
 int Algorithm::alpha_beta(Board* board, int depth, int alpha, int beta, bool isMaximizing){
     int score = evaluate(board);
 
-    // If a terminal state is reached or depth is 0, return the evaluated score
+    // if a game winning / losing state is reached or depth is 0, return the evaluated score
     if (score == MAX_INF || score == MIN_INF || depth == 0 || board->is_full()) {
         return score;
     }

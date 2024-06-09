@@ -91,14 +91,14 @@ void GameManager::ai(sf::RenderWindow& win) {
             // Undo the move
             board->remove_piece(y, x);
 
-            // If the value of the current move is more than the best value, update best
+            // update the value if it's better
             if (moveVal > best_val) {
                 best_move = { y, x };
                 best_val = moveVal;
             }
         }
 
-    // Make the best move
+    // making the move
     if(best_move.first != -1 && best_move.second != -1){
         board->add_piece(new O_Piece(best_move.first, best_move.second));
         board->draw();
@@ -108,7 +108,7 @@ void GameManager::ai(sf::RenderWindow& win) {
     std::cout << "Iterations: " << alg.get_iters() << std::endl;
     alg.reset_iters();
 
-    // Update game state after AI move
+    // state check
     if (board->is_winner(PieceType::O)) {
         std::cout << "WON O" << std::endl;
         state = GameState::AI_WON;
@@ -130,12 +130,14 @@ void GameManager::ai_alpha(sf::RenderWindow& win){
     int best_val = MIN_INF;
     std::pair<int, int> best_move = { -1, -1 };
 
+    // finding the best move
     for (auto move : alg.get_moves(board)) {
         int y = move.first;
         int x = move.second;
 
         board->add_piece(new O_Piece(y, x));
         int move_val = alg.alpha_beta(board, depth, MIN_INF, MAX_INF, false);
+        //int move_val = alg.min_max(board, depth, false);
         board->remove_piece(y, x);
 
         if (move_val > best_val) {
@@ -144,7 +146,7 @@ void GameManager::ai_alpha(sf::RenderWindow& win){
         }
     }
 
-    if(best_move.first == -1 && best_move.second == -1){
+    if(best_move.first < 0 && best_move.second < 0){
         auto moves = alg.get_moves(board);
         
         srand(time(NULL));
@@ -154,6 +156,7 @@ void GameManager::ai_alpha(sf::RenderWindow& win){
         //std::cout << "Random y: " << moves[random].first
         //    << "random x: " << moves[random].second << std::endl; 
     }
+
     board->add_piece(new O_Piece(best_move.first, best_move.second));
     win.clear();
     board->setup();

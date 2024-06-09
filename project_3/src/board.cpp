@@ -18,11 +18,11 @@ Board::Board(sf::RenderWindow* win, uint8_t size, uint8_t win_cond){
 Board::~Board() {
     for (uint8_t y = 0; y < size; y++) {
         for (uint8_t x = 0; x < size; x++) {
-            delete board[y][x]; // Delete each Piece
+            delete board[y][x]; // delete each Piece
         }
-        delete[] board[y]; // Delete each row
+        delete[] board[y]; // delete each row
     }
-    delete[] board; // Delete the board array
+    delete[] board; // delete the board array
 }
 
 void Board::setup(){
