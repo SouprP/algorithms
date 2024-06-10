@@ -41,7 +41,7 @@ int Algorithm::min_max(Board* board, int depth, bool isMaximizing){
             int x = move.second;
 
             // make the move
-            board->add_piece(new O_Piece(y, x));
+            board->add_piece(new X_Piece(y, x));
 
             // recurse call min_max and choose min value
             best = std::min(best, min_max(board, depth - 1, true));
@@ -198,6 +198,7 @@ int Algorithm::evaluate(Board* board){
         }
     }
 
+    // give bonus points if a piece is close to the center
     int center = size / 2;
     for (int y = 0; y < size; y++) {
         for (int x = 0; x < size; x++) {

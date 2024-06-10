@@ -50,8 +50,8 @@ void GameManager::handle_click(sf::RenderWindow& win, int x, int y){
     }
 
     try{
-        //ai(win);
-        ai_alpha(win);
+        ai(win);
+        //ai_alpha(win);
     }catch(std::exception& ignored){
         std::cout << ignored.what() << std::endl;
     }
@@ -99,16 +99,27 @@ void GameManager::ai(sf::RenderWindow& win) {
         }
 
     // making the move
-    if(best_move.first != -1 && best_move.second != -1){
-        board->add_piece(new O_Piece(best_move.first, best_move.second));
-        board->draw();
-        win.display();
+    if(best_move.first < 0 && best_move.second < 0){
+        auto moves = alg.get_moves(board);
+        
+        srand(time(NULL));
+        int random = rand() % moves.size();
+
+        best_move = moves[random];
+        //std::cout << "Random y: " << moves[random].first
+        //    << "random x: " << moves[random].second << std::endl; 
     }
 
+    board->add_piece(new O_Piece(best_move.first, best_move.second));
+    win.clear();
+    board->setup();
+    board->draw();
+    win.display();
+
+    std::cout << "Best val: " << best_val << std::endl;
     std::cout << "Iterations: " << alg.get_iters() << std::endl;
     alg.reset_iters();
 
-    // state check
     if (board->is_winner(PieceType::O)) {
         std::cout << "WON O" << std::endl;
         state = GameState::AI_WON;
